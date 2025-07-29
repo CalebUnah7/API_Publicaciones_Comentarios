@@ -1,0 +1,27 @@
+{
+  "name": "api_publicaciones_comentarios",
+  "version": "1.0.0",
+  "description": "Crearemos una API tipo bloc",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CalebUnah7/API_Publicaciones_Comentarios.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CalebUnah7/API_Publicaciones_Comentarios/issues"
+  },
+  "homepage": "https://github.com/CalebUnah7/API_Publicaciones_Comentarios#readme",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.2"
+  }
+}
