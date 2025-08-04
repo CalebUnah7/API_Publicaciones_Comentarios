@@ -1,0 +1,12 @@
+CREATE TABLE publicaciones (
+    id char(36) primary key,
+    titulo varchar(255) not null,
+    contenido text not null,
+    autor varchar (100) not null,
+    fecha_creacion timestamp default current_timestamp
+)
+
+Insert into publicaciones (id, titulo, contenido, autor) values 
+(UUID(), 'Como utilizar tu tarjeta de credito de manera inteligente', 'Analiza bien tus compras y los gastos necesarios de cada mes...', 'Abrahan'),
+(UUID(), 'Reseña de productos de belleza en tendencia', 'Comparamos precio-calidad, hay otro productos que se le parecen..', 'BeautyBlogger'),
+(UUID(), 'Países que debes de visitar si o si', 'Te muestro lugares y tips de viaje...', 'Un_ViajeroxElMundo')

@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise'
 import dotenv from 'dotenv'
 
-if(ProcessingInstruction.env.DB_HOST === undefined){
+if(process.env.DB_HOST === undefined){
     dotenv.config()
 }
 

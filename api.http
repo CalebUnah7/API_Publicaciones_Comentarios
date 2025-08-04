@@ -1,0 +1,5 @@
+### Lista de publicaciones
+GET http://localhost:3000/api/publicaciones
+
+### Ver publicacion por ID
+GET http://localhost:3000/api/publicaciones/df6459d6-70f7-11f0-ac91-3eca0ce8701b
