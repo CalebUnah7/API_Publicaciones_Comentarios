@@ -2,4 +2,17 @@
 GET http://localhost:3000/api/publicaciones
 
 ### Ver publicacion por ID
-GET http://localhost:3000/api/publicaciones/df6459d6-70f7-11f0-ac91-3eca0ce8701b
+GET http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
+
+
+### Crear un comentario
+POST http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a/comentarios
+Content-Type: application/json
+
+{
+    "comentario": "Excelente artículo, muy informativo.",
+    "autor": "Juan Perez"
+}
+
+### Ver comentarios de una publicacion
+GET http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a/comentarios
