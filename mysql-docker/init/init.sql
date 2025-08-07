@@ -33,8 +33,11 @@ CREATE TABLE users (
 
 /* Inserciones */
 
-INSERT INTO users (id, email, handle, nombre, password_hash) VALUES ();
-
+INSERT INTO users (id, email, handle, nombre, password_hash)
+VALUES 
+  (UUID_TO_BIN(UUID()), 'abrahan@example.com', 'Abrahan', 'Abrahan Rodríguez', 'hash$unoaaa'),
+  (UUID_TO_BIN(UUID()), 'beauty@example.com', 'BeautyBlogger', 'Camila Estilo', 'hash$dosaaa'),
+  (UUID_TO_BIN(UUID()), 'viajero@example.com', 'Un_ViajeroxElMundo', 'Luis Aventuras', 'hash$tresaaa');
 
 INSERT INTO publicaciones (id, titulo, contenido, autorID)
 VALUES (
