@@ -3,8 +3,8 @@ import {  registerUser,login,setPassword} from '../controllers/usuario.controlle
 
 const router = Router();
 
-router.post('/register', registerUser)
-router.post('/login', login)
-router.patch('/set-password', setPassword)  
+router.post('/auth/register', registerUser)
+router.post('/auth/login', login)
+router.patch('/auth/set-password', setPassword)  
 
 export default router;

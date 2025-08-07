@@ -1,9 +1,12 @@
 import {Router} from 'express'
-import { getAll, getById}   from '../controllers/publicacion.controller.js'
+import { getAll, getById, createPublicacion, editPublicacion, removePublicacion }   from '../controllers/publicacion.controller.js'
 
-const router = Router()
+const routerPublicacion = Router()
 
-router.get('/', getAll)
-router.get('/:id', getById)
+routerPublicacion.get('/', getAll)
+routerPublicacion.get('/:id', getById)
+routerPublicacion.post('/', createPublicacion)
+routerPublicacion.put('/:id', editPublicacion)
+routerPublicacion.delete('/:id', removePublicacion)
 
-export default router
+export default routerPublicacion
