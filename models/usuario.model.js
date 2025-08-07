@@ -1,38 +1,46 @@
 import pool from '../config/db.js';
 
-// export const createUser = async (username, email, hashedPassword) => {
-//   const [result] = await pool.query(
-//     'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-//     [username, email, hashedPassword]
-//   );
-//   return result;
-// };
+export async function register(user){
+  const query = `INSERT INTO users (id,email,handle,nombre,password_hash,role)
+                  VALUES(UUID_TO_BIN(?),?,?,?,?,?)`
+  const [rows] = await pool.query(query,[user[0],user[1],user[2],user[3],user[4],user[5]])
+  return rows
+}
 
-export const createUser = async (id, email, handle, username, hashedPassword) => {
-  const query = `
-    INSERT INTO users (id, email, handle, nombre, password_hash)
-    VALUES (UUID_TO_BIN(?), ?, ?, ?, ?);
-  `
+export async function loginUser(email){
+  const query = `SELECCT BIN_TO_UUID(id) as id,email,nombre,password_hash,
+                must_change_password,role,created_at
+                FROM users WHERE email = ?`
 
-  const [result] = await pool.query(query, [id, email, handle, username, hashedPassword]);
+  const [rows] = await pool.query(query,[email])
 
+  return rows[0]
+}
+
+export async function updatePassword(id,password_hash){
+  const query = `UPDATE users SET password_hash = ?,
+                 must_change_password=0 WHERE id= UUID_TO_BIN(?)`
+
+  const [rows] = await pool.query(query,[password_hash,id])
+
+  return rows
+}
+
+
+
+/*
+export const createUser = async (username, email, hashedPassword) => {
+  const [result] = await pool.query(
+    'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+    [username, email, hashedPassword]
+  );
   return result;
 };
 
 export const getUserByEmail = async (email) => {
-  const query = 'SELECT * FROM users WHERE email = ?;'
-
   const [rows] = await pool.query(
-    query, [email]
+    'SELECT * FROM users WHERE email = ?',
+    [email]
   );
-  return rows[0]
-};
-
-export const getUserIdByHandle = async (handle) => {
-  const query = `
-    SELECT BIN_TO_UUID(id) AS id FROM users WHERE handle = ?;
-  `
-  const [rows] = await pool.query(query, [handle]);
-  if (rows.length === 0) return null
-  return rows[0].id
-};
+  return rows[0]; 
+};*/

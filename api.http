@@ -49,7 +49,8 @@ Content-Type: application/json
     "nombre": "Jason Daniel VM",
     "email": "jasonmejia@unah.hn",
     "handle": "JasDan",
-    "password": "palabrapase115"
+    "password": "palabrapase115",
+    "role": "user"
 }
 
 ### Iniciar sesión - Usuario
