@@ -1,4 +1,4 @@
-import { deletePublicacion, getAllPublicaciones, getPublicacionesById, postPublicacion, putPublicacion } from "../models/publicacion.model.js";
+import { getAllPublicaciones, getPublicacionesById, postPublicacion, putPublicacion,  deletePublicacion } from "../models/publicacion.model.js";
 import { getUserIdByHandle } from "../models/usuario.model.js";
 import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';

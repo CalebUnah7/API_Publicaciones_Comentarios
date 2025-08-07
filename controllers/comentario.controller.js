@@ -1,6 +1,11 @@
 import { error } from 'console'
 import { CreateComentario,getComentariosByPublicacionId } from '../models/comentario.model.js'
+import { getPublicacionById } from '../models/publicacion.model.js'
+import { validateComentario} from '../utils/validateComentario.js'
 import { v4 as uuidv4 } from 'uuid'
+
+//TODO: validar usando el comentario.schema.js (validateComentario)
+//TODO: validar que la publicación exista con getPublicacionById
 export async function crearComentario(req, res){
     try {
         const {comentario} = req.body
@@ -24,7 +29,7 @@ export async function crearComentario(req, res){
         })
         } catch (error) {
             //console.log('ID del comentario:', id,publicacion_id,user_id,comentario)
-       console.error('Error al crear el comentario:', error)
+        console.error('Error al crear el comentario:', error)
         res.status(500).json({
             message: 'Error al crear el comentario'
         })
@@ -32,8 +37,7 @@ export async function crearComentario(req, res){
 }
 
 export async function getComentarios(req,res){
-   
-   try {
+    try {
     const {id:publicacion_id} = req.params
     const comentarios = await getComentariosByPublicacionId(publicacion_id)
     if(!comentarios || comentarios.length === 0){
@@ -42,9 +46,9 @@ export async function getComentarios(req,res){
         })
     }
     res.status(200).json({comentarios})
-   } catch (error) {
-    res.status(500).json({
-        message: 'Error al obtener los comentarios'
-    })
-   } 
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener los comentarios'
+        })
+    } 
 }
