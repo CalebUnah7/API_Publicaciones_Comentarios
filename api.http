@@ -5,14 +5,71 @@ GET http://localhost:3000/api/publicaciones
 GET http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
 
 
-### Crear un comentario
+### Ver comentarios de una publicacion
+GET http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a/comentarios
+
+### Crear un comentario (requiere token)
 POST http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a/comentarios
+Content-Type: application/json
+Authorization: Bearer <token_jwt>
+
+{
+    "comentario": "Interesante, muy informativo."
+}
+
+### Crear publicación (requiere token)
+POST http://localhost:3000/api/publicaciones
+Content-Type: application/json
+Authorization: Bearer <token_jwt>
+
+{
+    "titulo": "Nueva publicación",
+    "contenido": "Contenido de ejemplo..."
+}
+
+### Editar publicación (requiere token/ser el autor)
+PUT http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
+Content-Type: application/json
+Authorization: Bearer <token_jwt>
+
+{
+    "titulo": "Nuevo Título",
+    "contenido": "Contenido modificado..."
+}
+
+### Eliminar publicación (requiere token/ser el autor)
+DELETE http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
+Authorization: Bearer <token_jwt>
+
+### Registrar Usuario
+POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
-    "comentario": "Excelente artículo, muy informativo.",
-    "autor": "Juan Perez"
+    "nombre": "Jason Daniel VM",
+    "email": "jasonmejia@unah.hn",
+    "handle": "JasDan",
+    "password": "palabrapase115"
 }
 
-### Ver comentarios de una publicacion
-GET http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a/comentarios
+### Iniciar sesión - Usuario
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "jasonmejia@unah.hn",
+    "password": "palabrapase115"
+}
+
+
+### Cambio de contraseña
+
+PATCH http://localhost:3000/auth/set-password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFiMDg0YWRiLTJkMjEtNGM1ZC04YTNlLTRjNWFkOTEyNDY2YSIsInBhc3N3b3JkIjoiJDJiJDEwJHA3YlFMZkd4a1QyWDdtN1FZRDFlWWU1S2VSRG5wSEhXb1c0czE2RDlFN0hkWDBDZVNjVWtTIiwiaWF0IjoxNzUyNzk0NjQzLCJleHAiOjE3NTI3OTgyNDN9.dC9JbCFBbyjW3hO_b5kc7GiHZH8MHWzo0vgNeWzKlm8
+
+{ 
+    "old_password":"palabrapase115",
+    "new_password":"palabraPase#02311", 
+    "confirm_password": "palabraPase#02311"
+}

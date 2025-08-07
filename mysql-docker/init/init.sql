@@ -8,6 +8,7 @@ CREATE TABLE publicaciones (
     publica boolean default true,
     FOREIGN KEY (autorID) REFERENCES users(id)
 );
+
 CREATE TABLE comentariosPublicaciones (
     id char(36) primary key,
     publicacion_id char(36) NOT NULL,
@@ -29,6 +30,11 @@ CREATE TABLE users (
   role ENUM('user', 'admin') DEFAULT 'user',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+/* Inserciones */
+
+INSERT INTO users (id, email, handle, nombre, password_hash) VALUES ();
+
 
 INSERT INTO publicaciones (id, titulo, contenido, autorID)
 VALUES (
