@@ -22,6 +22,7 @@ CREATE TABLE comentariosPublicaciones (
 CREATE TABLE users (
   id BINARY(16) PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
+  handle VARCHAR(50) UNIQUE NOT NULL,
   nombre VARCHAR(100) NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   must_change_password BOOLEAN DEFAULT TRUE,
@@ -29,9 +30,26 @@ CREATE TABLE users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-Insert into publicaciones (id, titulo, contenido, autorID) values 
-(UUID(), 'Como utilizar tu tarjeta de credito de manera inteligente', 'Analiza bien tus compras y los gastos necesarios de cada mes...', 'Abrahan'),
-(UUID(), 'Reseña de productos de belleza en tendencia', 'Comparamos precio-calidad, hay otro productos que se le parecen..', 'BeautyBlogger'),
-(UUID(), 'Países que debes de visitar si o si', 'Te muestro lugares y tips de viaje...', 'Un_ViajeroxElMundo');
+INSERT INTO publicaciones (id, titulo, contenido, autorID)
+VALUES (
+  UUID(),
+  'Como utilizar tu tarjeta de credito de manera inteligente',
+  'Analiza bien tus compras y los gastos necesarios de cada mes...',
+  (SELECT id FROM users WHERE handle = 'Abrahan')
+);
 
+INSERT INTO publicaciones (id, titulo, contenido, autorID)
+VALUES (
+  UUID(),
+  'Reseña de productos de belleza en tendencia',
+  'Comparamos precio-calidad, hay otro productos que se le parecen..',
+  (SELECT id FROM users WHERE handle = 'BeautyBlogger')
+);
 
+INSERT INTO publicaciones (id, titulo, contenido, autorID)
+VALUES (
+  UUID(),
+  'Países que debes de visitar si o si',
+  'Te muestro lugares y tips de viaje...',
+  (SELECT id FROM users WHERE handle = 'Un_ViajeroxElMundo')
+);
