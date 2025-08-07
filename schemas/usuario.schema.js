@@ -1,6 +1,7 @@
 import zod from 'zod';
 import { passwordSchema } from './password.schema.js';
 
+//cambiar de ser necesario
 const usuarioSchema = zod.object({
     "nombre": zod.string({
         message: "El nombre es obligatorio"

@@ -27,7 +27,7 @@ Authorization: Bearer <token_jwt>
     "contenido": "Contenido de ejemplo..."
 }
 
-### Editar publicación (requiere token/ser el autor)
+### Editar publicación (solo el autor) 
 PUT http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
 Content-Type: application/json
 Authorization: Bearer <token_jwt>
@@ -37,7 +37,7 @@ Authorization: Bearer <token_jwt>
     "contenido": "Contenido modificado..."
 }
 
-### Eliminar publicación (requiere token/ser el autor)
+### Eliminar publicación (solo el autor) 
 DELETE http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
 Authorization: Bearer <token_jwt>
 

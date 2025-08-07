@@ -7,7 +7,7 @@ export const success = (message, data) => {
     };
 }
 
-export const error = (message) => {
+export const errorNF = (message) => {
     return {
 
         status: 404,

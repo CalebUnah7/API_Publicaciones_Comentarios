@@ -9,3 +9,7 @@ const comentarioSchema = zod.object({
     "publicacionId": zod.string().uuid({ version: "v4" }),
     "autorId": zod.string().uuid({ version: "v4" }),
 }).strict()
+
+export const validateComentario = (comentario) => {
+    return comentarioSchema.safeParse(comentario)
+}

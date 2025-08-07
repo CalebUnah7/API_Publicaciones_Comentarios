@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createUser, getUserByEmail } from '../models/user.model.js';
 
+
+//TODO: en caso de no tener un schema, validar usando el usuario.schema.js
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
