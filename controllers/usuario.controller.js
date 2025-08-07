@@ -20,15 +20,16 @@ export async function registerUser(req, res){
       errors: parseResult.error.errors
     })
   }
-  const {email,nombre,handle,role} = req.body
+  const { email, nombre, handle, role } = req.body
 
   const id = uuidv4()
   console.log(id)
-  const password_hash = await bcrypt.hash('1234',10)
+  const password = Math.random().toString().slice(2, 6)
+  const password_hash = await bcrypt.hash(password,10)
   console.log(process.env.RESEND_API_KEY)
   
   try {
-    const user = await register([id,email,handle,nombre,password_hash,role])
+    const user = await register([ id, email, handle, nombre, password_hash, role ])
     
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
@@ -41,7 +42,7 @@ export async function registerUser(req, res){
     res.json({
       success: true,
       message: 'Usuario registrado. Se envió la contraseña temporal al correo electrónico.',
-      data: {id,email,nombre,handle}
+      data: { id, email, nombre, handle }
     })
 
   } catch (error) {
@@ -54,12 +55,12 @@ export async function registerUser(req, res){
 }
 
 export async function login(req,res){
-  const {email,password} = req.body
+  const { email, password } = req.body
   const data = await loginUser(email)
   console.log(data)
 
   //validamos que las contraseñas coincidan
-  if(!await bcrypt.compare(password,data.password_hash)){
+  if(!await bcrypt.compare(password, data.password_hash)){
     return res.status(401).json({
       success: false,
       message: 'Usuario o contraseña incorrectos'
@@ -113,7 +114,7 @@ export async function setPassword(req,res){
   }
   
   const {authorization} = req.headers
-  const {old_password,new_password,confirm_password} = req.body
+  const {old_password,new_password, confirm_password} = req.body
   const token = authorization.split(' ')[1]//obtenemos el token del header
   try {
     const {id,password} = jwt.verify(token,process.env.JWT_SECRET)

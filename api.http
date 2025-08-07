@@ -49,7 +49,7 @@ Content-Type: application/json
     "nombre": "Jason Daniel VM",
     "email": "jasonmejia@unah.hn",
     "handle": "JasDan",
-    "password": "palabrapase115",
+    "password": "palabraPase115",
     "role": "user"
 }
 
@@ -59,7 +59,7 @@ Content-Type: application/json
 
 {
     "email": "jasonmejia@unah.hn",
-    "password": "palabrapase115"
+    "password": "palabraPase115"
 }
 
 
@@ -70,7 +70,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFiMDg0YWRiLTJkMjEtNGM1ZC04YTNlLTRjNWFkOTEyNDY2YSIsInBhc3N3b3JkIjoiJDJiJDEwJHA3YlFMZkd4a1QyWDdtN1FZRDFlWWU1S2VSRG5wSEhXb1c0czE2RDlFN0hkWDBDZVNjVWtTIiwiaWF0IjoxNzUyNzk0NjQzLCJleHAiOjE3NTI3OTgyNDN9.dC9JbCFBbyjW3hO_b5kc7GiHZH8MHWzo0vgNeWzKlm8
 
 { 
-    "old_password":"palabrapase115",
+    "old_password":"palabraPase115",
     "new_password":"palabraPase#02311", 
     "confirm_password": "palabraPase#02311"
 }

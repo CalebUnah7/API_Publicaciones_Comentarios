@@ -1,26 +1,23 @@
 import pool from '../config/db.js'
 
 export const getAllPublicaciones = async(limit=10, offset=0) =>{
-    const [rows] = await pool.query(`
+    const query = `
         SELECT * FROM publicaciones WHERE activo = true 
         ORDER BY fecha_creacion desc limit ? offset ?;
-        `,
-        [limit, offset]
-    )
+    `
+    const [rows] = await pool.query(query, [limit, offset])
     return rows
 }
 
 export const getPublicacionesById = async (id) =>{
-    const [rows ] = await pool.query(`
+    const query = `
             SELECT * FROM publicaciones WHERE id = ? AND activo = true;
-        `,
-        [id]
-    )
+        `
+    const [ rows ] = await pool.query(query, [id]);   
     return rows
 }
 
 export const postPublicacion = async (id, titulo, contenido, autorId) =>{
-
     const query = `
         INSERT INTO publicaciones (id, titulo, contenido, autorID)
         VALUES (UUID_TO_BIN(?), ?, ?, UUID_TO_BIN(?));

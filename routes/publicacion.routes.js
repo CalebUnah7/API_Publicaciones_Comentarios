@@ -1,5 +1,12 @@
 import {Router} from 'express'
-import { getAll, getById, createPublicacion, editPublicacion, removePublicacion }   from '../controllers/publicacion.controller.js'
+import { 
+    getAll, 
+    getById, 
+    createPublicacion, 
+    editPublicacion, 
+    removePublicacion 
+    
+}   from '../controllers/publicacion.controller.js'
 
 const routerPublicacion = Router()
 
