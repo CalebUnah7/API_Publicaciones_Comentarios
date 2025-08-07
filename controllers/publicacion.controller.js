@@ -94,9 +94,16 @@ export const editPublicacion = async (req, res) => {
 
     try {
         const publicacion = await getPublicacionesById(parsedId)
+
         if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
             return res.status(404).json({
                 message: `La publicación con id ${id} no fue encontrada`
+            });
+        }
+
+        if (!publicacion.activo) {
+            return res.status(400).json({
+                message: 'La publicación no se encuentra activa'
             });
         }
 
@@ -136,6 +143,12 @@ export const removePublicacion = async (req, res) => {
         if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
             return res.status(404).json({
                 message: `La publicación con id ${id} no fue encontrada`
+            });
+        }
+
+        if (!publicacion.activo) {
+            return res.status(400).json({
+                message: 'La publicación ya ha sido removida'
             });
         }
 

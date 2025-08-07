@@ -39,12 +39,28 @@ export async function crearComentario(req, res){
 export async function getComentarios(req,res){
     try {
     const {id:publicacion_id} = req.params
+
+    const publicacion = await getPublicacionesById(publicacion_id)
+
+    if(!publicacion || publicacion.length === 0){
+        return res.status(404).json({
+            message: 'La publicacion no fue encontrada'
+        })
+    }
+    
+    if (!publicacion.activo) {
+        return res.status(400).json({
+            message: 'La publicación no se encuentra activa'
+        });
+    }
+
     const comentarios = await getComentariosByPublicacionId(publicacion_id)
     if(!comentarios || comentarios.length === 0){
         return res.status(404).json({
             message: 'No se encontraron comentarios para esta publicacion'
         })
     }
+
     res.status(200).json({comentarios})
     } catch (error) {
         res.status(500).json({
