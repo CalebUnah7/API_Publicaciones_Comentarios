@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import {  registerUser,login,setPassword} from '../controllers/usuario.controller.js';
 
-const router = Router();
+const routerUsuario = Router();
 
-router.post('/auth/register', registerUser)
-router.post('/auth/login', login)
-router.patch('/auth/set-password', setPassword)  
+routerUsuario.post('/register', registerUser)
+routerUsuario.post('/login', login)
+routerUsuario.patch('/set-password', setPassword)  
 
-export default router;
+export default routerUsuario;

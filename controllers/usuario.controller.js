@@ -11,7 +11,7 @@ import {passwordSchema} from '../schemas/password.schema.js'
 
 export async function registerUser(req, res){
   //validamos el cuerpo de la solicitud
-  const parseResult = validateUsuario.safeParse(req.body)
+  const parseResult = validateUsuario(req.body)
 
   if(!parseResult.success){
     return res.status(400).json({
