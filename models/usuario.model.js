@@ -1,30 +1,44 @@
 import pool from '../config/db.js';
 
-export async function register(user){
-  const query = `INSERT INTO users (id,email,handle,nombre,password_hash,role)
-                  VALUES(UUID_TO_BIN(?),?,?,?,?,?)`
-  const [rows] = await pool.query(query,[user[0],user[1],user[2],user[3],user[4],user[5]])
-  return rows
+export const register = async (user) => {
+
+    const query = `INSERT INTO users (id, name, email, phone, password_hash, must_change_password, role) 
+                    VALUES ( UUID_TO_BIN(?), ?, ?, ?, ?, 1, ?)`
+
+    const [rows] = await pool.query(query, [...user])
+
+    return rows
+
 }
 
-export async function loginUser(email){
-  const query = `SELECCT BIN_TO_UUID(id) as id,email,nombre,password_hash,
-                must_change_password,role,created_at
-                FROM users WHERE email = ?`
+export async function loginUser(email) {
+  const query = `SELECT BIN_TO_UUID(id) as id,
+                        email,
+                        handle,
+                        nombre,
+                        password_hash,
+                        must_change_password,
+                        role,
+                        created_at
+                 FROM users
+                 WHERE email = ?`;
 
-  const [rows] = await pool.query(query,[email])
+  const [rows] = await pool.query(query, [email]);
 
-  return rows[0]
+  return rows[0];
 }
 
-export async function updatePassword(id,password_hash){
-  const query = `UPDATE users SET password_hash = ?,
-                must_change_password=0 WHERE id= UUID_TO_BIN(?)`
+export async function updatePassword(id, password_hash) {
+  const query = `UPDATE users
+                 SET password_hash = ?,
+                     must_change_password = 0
+                 WHERE id = UUID_TO_BIN(?)`;
 
-  const [rows] = await pool.query(query,[password_hash,id])
+  const [rows] = await pool.query(query, [password_hash, id]);
 
-  return rows
+  return rows;
 }
+
 
 
 

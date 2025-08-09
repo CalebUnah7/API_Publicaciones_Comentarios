@@ -7,13 +7,14 @@ import {
     removePublicacion 
     
 }   from '../controllers/publicacion.controller.js'
+import { verifyToken } from '../middlewares/verifyToken.js';
 
 const routerPublicacion = Router()
 
 routerPublicacion.get('/', getAll)
 routerPublicacion.get('/:id', getById)
-routerPublicacion.post('/', createPublicacion)
-routerPublicacion.put('/:id', editPublicacion)
-routerPublicacion.delete('/:id', removePublicacion)
+routerPublicacion.post('/', verifyToken, createPublicacion)
+routerPublicacion.put('/:id', verifyToken, editPublicacion)
+routerPublicacion.delete('/:id', verifyToken, removePublicacion)
 
 export default routerPublicacion
