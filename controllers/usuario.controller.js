@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import {Resend} from 'resend'
 import {v4 as uuidv4} from 'uuid'
-import {register,loginUser,updatePassword} from '../models/auth.model.js'
+import {register, loginUser, loginUserByHandle, updatePassword} from '../models/usuario.model.js'
 import {validateUsuario} from '../schemas/usuario.schema.js'
 import {passwordSchema} from '../schemas/password.schema.js'
 
@@ -99,7 +99,54 @@ export async function login(req,res){
     token: token
   })
 
+}
+
+export async function loginByHandle(req,res){
+  const { handle, password } = req.body
+  const data = await loginUserByHandle(handle)
+  console.log(data)
+
+  //validamos que las contraseñas coincidan
+  if(!await bcrypt.compare(password, data.password_hash)){
+    return res.status(401).json({
+      success: false,
+      message: 'Usuario o contraseña incorrectos'
+    })
+    }
+  //validar si el usuario cambió la contraseña temporal
+  if(data.must_change_password){
+    const tokenTemporal = jwt.sign({
+      id: data.id,
+      password: data.password_hash
+    }, process.env.JWT_SECRET,
+    {  expiresIn: '1h'  
+    })
+
+    return res.status(401).json({
+      success: true,
+      message: 'Debe cambiar su contraseña',
+      data: {
+        token: tokenTemporal,
+      }
+    })
   }
+  
+  const token = jwt.sign({id: data.id,role: data.role},process.env.JWT_SECRET,
+    { algorithm: 'HS256',
+      expiresIn: '12h'
+    }
+  )
+
+  delete data.password_hash
+
+  res.json({
+    success: true,
+    message: 'Usuario autenticado correctamente',
+    data: data,
+    token: token
+  })
+
+}
 
 export async function setPassword(req,res){
   //validamos que la contraseña cumpla con el schema

@@ -20,19 +20,29 @@ export async function loginUser(email) {
                         must_change_password,
                         role,
                         created_at
-                 FROM users
-                 WHERE email = ?`;
+                FROM users
+                WHERE email = ?`;
 
   const [rows] = await pool.query(query, [email]);
 
   return rows[0];
 }
 
+export async function loginUserByHandle(handle){
+  const query = `SELECT BIN_TO_UUID(id) as id, email, handle, nombre, password_hash,
+                must_change_password, role, created_at
+                FROM users WHERE handle = ?`
+
+  const [rows] = await pool.query(query,[handle])
+
+  return rows[0]
+}
+
 export async function updatePassword(id, password_hash) {
   const query = `UPDATE users
-                 SET password_hash = ?,
-                     must_change_password = 0
-                 WHERE id = UUID_TO_BIN(?)`;
+                SET password_hash = ?,
+                    must_change_password = 0
+                WHERE id = UUID_TO_BIN(?)`;
 
   const [rows] = await pool.query(query, [password_hash, id]);
 
