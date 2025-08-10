@@ -7,6 +7,9 @@ import { v4 as uuidv4 } from 'uuid'
 //TODO: validar usando el comentario.schema.js (validateComentario)
 //TODO: validar que la publicación exista con getPublicacionById
 export async function crearComentario(req, res){
+    //TODO: TOMAR EL ID DEL TOKEN Y BUSCAR EL NOMBRE DEL USUARIO,
+    //TODO: PARA QUE AL MOMENTO DE HACER UNA RESPUESTA JSON,
+    //TODO: SE ENVÍE EL USUARIO, LA FECHA, Y LO QUE COMENTÓ.
     try {
         const {comentario} = req.body
         const {id:publicacion_id} = req.params
