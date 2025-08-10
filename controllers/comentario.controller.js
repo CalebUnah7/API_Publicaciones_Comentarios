@@ -1,7 +1,7 @@
 import { error } from 'console'
 import { CreateComentario,getComentariosByPublicacionId } from '../models/comentario.model.js'
 import { getPublicacionById } from '../models/publicacion.model.js'
-import { validateComentario} from '../utils/validateComentario.js'
+import { validateComentario} from '../schemas/comentario.schema.js'
 import { v4 as uuidv4 } from 'uuid'
 
 //TODO: validar usando el comentario.schema.js (validateComentario)
@@ -10,17 +10,41 @@ export async function crearComentario(req, res){
     //TODO: TOMAR EL ID DEL TOKEN Y BUSCAR EL NOMBRE DEL USUARIO,
     //TODO: PARA QUE AL MOMENTO DE HACER UNA RESPUESTA JSON,
     //TODO: SE ENVÍE EL USUARIO, LA FECHA, Y LO QUE COMENTÓ.
-    try {
-        const {comentario} = req.body
         const {id:publicacion_id} = req.params
+        const user_id = req.user.id
+        const comentarioOriginal = req.body.comentario
+        
+        const publicacion = await getPublicacionById(publicacion_id)
+
+        if(!publicacion || publicacion.length === 0){
+            return res.status(404).json({
+                message: 'La publicacion no fue encontrada'
+            })
+        }
+
+        const parseComentario = validateComentario(comentario)
+        if (!parseComentario.success) {
+            return res.status(400).json({
+                message: 'Error de validación',
+                errors: parseComentario.error.errors
+            });
+        }
+
+        //hacemos la sanitización del comentario
+        const comentario = sanitizeHtml(comentarioOriginal,{
+            allowedTags : [], // No se permiten etiquetas HTML
+            AllowedAtributes : {} // tampoco se permiten atributos
+        })
+    try {
+        
         //como hacer para que el id del usuario que crea el comentario se guarde
-        const user_id = 1//req.user.id // asumiendo que el id del usuario está en req.user.id
+        //const user_id = 1//req.user.id // asumiendo que el id del usuario está en req.user.id
         //user_id = 1 // temporalmente, deberías obtenerlo del token JWT o de la sesión del usuario
-        const id2 = uuidv4() // generar un nuevo UUID para el comentario
-        const result = await CreateComentario(id2,publicacion_id,user_id,comentario)
+        const id = uuidv4() // generar un nuevo UUID para el comentario
+        const result = await CreateComentario(id,publicacion_id,user_id,comentario)
         console.log(result)
         if(!result){
-            console.error('Error al crear el comentario', e)
+            //console.error('Error al crear el comentario', e)
             return res.status(400).json({
                 message: 'Error al crear el comentario'
             })
@@ -32,7 +56,7 @@ export async function crearComentario(req, res){
         })
         } catch (error) {
             //console.log('ID del comentario:', id,publicacion_id,user_id,comentario)
-        console.error('Error al crear el comentario:', error)
+        //console.error('Error al crear el comentario:', error)
         res.status(500).json({
             message: 'Error al crear el comentario'
         })
@@ -43,19 +67,19 @@ export async function getComentarios(req,res){
     try {
     const {id:publicacion_id} = req.params
 
-    const publicacion = await getPublicacionesById(publicacion_id)
+   /* const publicacion = await getComentariosByPublicacionId(publicacion_id)
 
     if(!publicacion || publicacion.length === 0){
         return res.status(404).json({
             message: 'La publicacion no fue encontrada'
         })
-    }
+    }*/
     
-    if (!publicacion.activo) {
+   /* if (!publicacion.activo) {
         return res.status(400).json({
             message: 'La publicación no se encuentra activa'
         });
-    }
+    }*/
 
     const comentarios = await getComentariosByPublicacionId(publicacion_id)
     if(!comentarios || comentarios.length === 0){
