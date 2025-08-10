@@ -21,6 +21,12 @@ export async function crearComentario(req, res){
                 message: 'La publicacion no fue encontrada'
             })
         }
+        
+        //hacemos la sanitización del comentario
+        const comentario = sanitizeHtml(comentarioOriginal,{
+            allowedTags : [], // No se permiten etiquetas HTML
+            AllowedAtributes : {} // tampoco se permiten atributos
+        })
 
         const parseComentario = validateComentario(comentario)
         if (!parseComentario.success) {
@@ -30,11 +36,7 @@ export async function crearComentario(req, res){
             });
         }
 
-        //hacemos la sanitización del comentario
-        const comentario = sanitizeHtml(comentarioOriginal,{
-            allowedTags : [], // No se permiten etiquetas HTML
-            AllowedAtributes : {} // tampoco se permiten atributos
-        })
+
     try {
         
         //como hacer para que el id del usuario que crea el comentario se guarde
