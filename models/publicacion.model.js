@@ -1,20 +1,35 @@
 import pool from '../config/db.js'
 
 // Obtener todas las publicaciones activas con paginación
-export const getAllPublicaciones = async(limit=10, offset=0) =>{
+export const getAllPublicaciones = async (limit = 10, offset = 0) => {
     const query = `
-        SELECT * FROM publicaciones WHERE activo = true 
-        ORDER BY fecha_creacion desc limit ? offset ?;
+        SELECT p.id, p.titulo, p.contenido,
+            BIN_TO_UUID(p.autorID) AS autorID,
+            u.nombre AS autor_nombre,
+            u.handle AS autor_handle,
+            p.fecha_creacion
+        FROM publicaciones p
+        JOIN users u ON p.autorID = u.id
+        WHERE p.activo = TRUE
+        ORDER BY p.fecha_creacion DESC
+        LIMIT ? OFFSET ?;
     `
     const [rows] = await pool.query(query, [limit, offset])
     return rows
 }
 
-// Obtener una publicación por su ID (solo si está activa)
-export const getPublicacionesById = async (id) =>{
+// Obtener una publicación por ID
+export const getPublicacionById = async (id) => {
     const query = `
-            SELECT * FROM publicaciones WHERE id = ? AND activo = true;
-        `
+        SELECT p.id, p.titulo, p.contenido,
+            BIN_TO_UUID(p.autorID) AS autorID,
+            u.nombre AS autor_nombre,
+            u.handle AS autor_handle,
+            p.fecha_creacion
+        FROM publicaciones p
+        JOIN users u ON p.autorID = u.id
+        WHERE p.id = ? AND p.activo = TRUE;
+    `
     const [ rows ] = await pool.query(query, [id]);   
     return rows
 }

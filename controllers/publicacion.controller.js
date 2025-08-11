@@ -158,10 +158,16 @@ export const removePublicacion = async (req, res) => {
             });
         }
 
-        const response = await deletePublicacion(parsedId)
+        const responsePub = await deletePublicacion(parsedId)
         res.status(200).json({
             message: 'Publicación removida correctamente',
-            response: response
+            response: responsePub
+        })
+
+        const responseCom = await deleteComentariosByPublicacionId(parsedId)
+        res.status(200).json({
+            message: 'Comentarios asociados removidos correctamente',
+            response: responsePub
         })
 
     } catch (error) {

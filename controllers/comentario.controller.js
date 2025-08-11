@@ -4,8 +4,6 @@ import { getPublicacionById } from '../models/publicacion.model.js'
 import { validateComentario} from '../schemas/comentario.schema.js'
 import { v4 as uuidv4 } from 'uuid'
 
-//TODO: validar usando el comentario.schema.js (validateComentario)
-//TODO: validar que la publicación exista con getPublicacionById
 export async function crearComentario(req, res){
     //TODO: TOMAR EL ID DEL TOKEN Y BUSCAR EL NOMBRE DEL USUARIO,
     //TODO: PARA QUE AL MOMENTO DE HACER UNA RESPUESTA JSON,
@@ -69,7 +67,7 @@ export async function getComentarios(req,res){
     try {
     const {id:publicacion_id} = req.params
 
-   /* const publicacion = await getComentariosByPublicacionId(publicacion_id)
+    /* const publicacion = await getComentariosByPublicacionId(publicacion_id)
 
     if(!publicacion || publicacion.length === 0){
         return res.status(404).json({
@@ -77,7 +75,7 @@ export async function getComentarios(req,res){
         })
     }*/
     
-   /* if (!publicacion.activo) {
+    /* if (!publicacion.activo) {
         return res.status(400).json({
             message: 'La publicación no se encuentra activa'
         });

@@ -9,6 +9,7 @@ import {register, loginUser, loginUserByHandle, updatePassword} from '../models/
 import {validateUsuario} from '../schemas/usuario.schema.js'
 import {passwordSchema} from '../schemas/password.schema.js'
 
+// Controlador para registrar un nuevo usuario
 export async function registerUser(req, res){
   //validamos el cuerpo de la solicitud
   const parseResult = validateUsuario(req.body)
@@ -54,6 +55,7 @@ export async function registerUser(req, res){
   }
 }
 
+// Controlador para iniciar sesión con el email del usuario
 export async function login(req,res){
   const { email, password } = req.body
   const data = await loginUser(email)
@@ -66,23 +68,23 @@ export async function login(req,res){
       message: 'Usuario o contraseña incorrectos'
     })
     }
-  //validar si el usuario cambió la contraseña temporal
-  if(data.must_change_password){
-    const tokenTemporal = jwt.sign({
-      id: data.id,
-      password: data.password_hash
-    }, process.env.JWT_SECRET,
-    {  expiresIn: '1h'  
-    })
+  // //validar si el usuario cambió la contraseña temporal
+  // if(data.must_change_password){
+  //   const tokenTemporal = jwt.sign({
+  //     id: data.id,
+  //     password: data.password_hash
+  //   }, process.env.JWT_SECRET,
+  //   {  expiresIn: '1h'  
+  //   })
 
-    return res.status(401).json({
-      success: true,
-      message: 'Debe cambiar su contraseña',
-      data: {
-        token: tokenTemporal,
-      }
-    })
-  }
+  //   return res.status(401).json({
+  //     success: true,
+  //     message: 'Debe cambiar su contraseña',
+  //     data: {
+  //       token: tokenTemporal,
+  //     }
+  //   })
+  // }
   
   const token = jwt.sign({id: data.id,role: data.role},process.env.JWT_SECRET,
     { algorithm: 'HS256',
@@ -101,6 +103,8 @@ export async function login(req,res){
 
 }
 
+
+// Controlador para iniciar sesión con el handle(@) del usuario
 export async function loginByHandle(req,res){
   const { handle, password } = req.body
   const data = await loginUserByHandle(handle)
@@ -113,23 +117,23 @@ export async function loginByHandle(req,res){
       message: 'Usuario o contraseña incorrectos'
     })
     }
-  //validar si el usuario cambió la contraseña temporal
-  if(data.must_change_password){
-    const tokenTemporal = jwt.sign({
-      id: data.id,
-      password: data.password_hash
-    }, process.env.JWT_SECRET,
-    {  expiresIn: '1h'  
-    })
+  // //validar si el usuario cambió la contraseña temporal
+  // if(data.must_change_password){
+  //   const tokenTemporal = jwt.sign({
+  //     id: data.id,
+  //     password: data.password_hash
+  //   }, process.env.JWT_SECRET,
+  //   {  expiresIn: '1h'  
+  //   })
 
-    return res.status(401).json({
-      success: true,
-      message: 'Debe cambiar su contraseña',
-      data: {
-        token: tokenTemporal,
-      }
-    })
-  }
+  //   return res.status(401).json({
+  //     success: true,
+  //     message: 'Debe cambiar su contraseña',
+  //     data: {
+  //       token: tokenTemporal,
+  //     }
+  //   })
+  // }
   
   const token = jwt.sign({id: data.id,role: data.role},process.env.JWT_SECRET,
     { algorithm: 'HS256',
@@ -148,6 +152,7 @@ export async function loginByHandle(req,res){
 
 }
 
+// Controlador para cambiar la contraseña del usuario
 export async function setPassword(req,res){
   //validamos que la contraseña cumpla con el schema
   const parseResult = passwordSchema.safeParse(req.body)
