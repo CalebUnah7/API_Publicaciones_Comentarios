@@ -17,6 +17,9 @@ const usuarioSchema = zod.object({
         message: "El handle del usuario debe tener al menos 3 caracteres"
     }).max(30),
     "password": passwordSchema,
+    "role": zod.enum(['user', 'admin'], {
+        message: "El rol debe ser 'user' o 'admin'"
+    }).default('user') // Por defecto, el rol es 'user'
 }).strict()
 
 export const validateUsuario = (usuario) => {

@@ -13,16 +13,16 @@ import {passwordSchema} from '../schemas/password.schema.js'
 export async function registerUser(req, res){
     //validamos el cuerpo de la solicitud
   const parseResult = validateUsuario(req.body)
+  const { success, error, data:safeData } = parseResult
 
-  if(!parseResult.success){
+  if(!success){
     return res.status(400).json({
-      success: false,
       message: 'Datos de usuario inválidos',
-      errors: parseResult.error.errors
+      error
     })
   }
-  const { email, nombre, handle, password, role } = req.body
-
+  //const { email, nombre, handle, password, role } = req.body
+  const { email, nombre, handle, password, role } = safeData
   const id = uuidv4()
   console.log(id)
   // const password = Math.random().toString().slice(2, 6)
@@ -97,7 +97,6 @@ export async function login(req,res){
   res.json({
     success: true,
     message: 'Usuario autenticado correctamente',
-    data: data,
     token: token
   })
 

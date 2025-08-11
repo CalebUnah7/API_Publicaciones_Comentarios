@@ -1,8 +1,9 @@
 import { error } from 'console'
-import { CreateComentario,getComentariosByPublicacionId } from '../models/comentario.model.js'
+import { createComentario,getComentariosByPublicacionId } from '../models/comentario.model.js'
 import { getPublicacionById } from '../models/publicacion.model.js'
 import { validateComentario} from '../schemas/comentario.schema.js'
 import { v4 as uuidv4 } from 'uuid'
+import sanitizeHtml from 'sanitize-html'
 
 export async function crearComentario(req, res){
     //TODO: TOMAR EL ID DEL TOKEN Y BUSCAR EL NOMBRE DEL USUARIO,
@@ -10,17 +11,17 @@ export async function crearComentario(req, res){
     //TODO: SE ENVÍE EL USUARIO, LA FECHA, Y LO QUE COMENTÓ.
         const {id:publicacion_id} = req.params
         const user_id = req.user.id
-        const comentarioOriginal = req.body.comentario
-    
-        const parsedPubId = Number(publicacion_id)
+        const {contenido} = req.body
+       // console.log(user_id, publicacion_id, contenido)
+       /* const parsedPubId = Number(publicacion_id)
 
         if (isNaN(parsedPubId)) {
             return res.status(400).json({
                 message: 'Id de publicación incorrecto'
             })
-        }
+        }*/
 
-        const publicacion = await getPublicacionById(parsedPubId)
+        const publicacion = await getPublicacionById(publicacion_id)
 
         if(!publicacion || publicacion.length === 0){
             return res.status(404).json({
@@ -29,27 +30,28 @@ export async function crearComentario(req, res){
         }
         
         //hacemos la sanitización del comentario
-        const comentario = sanitizeHtml(comentarioOriginal,{
+        const texto = sanitizeHtml(contenido,{
             allowedTags : [], // No se permiten etiquetas HTML
             AllowedAtributes : {} // tampoco se permiten atributos
         })
 
-        const parseComentario = validateComentario(comentario)
+        const parseComentario = validateComentario({contenido: texto})
         if (!parseComentario.success) {
             return res.status(400).json({
                 message: 'Error de validación',
-                errors: parseComentario.error.errors
+                error: parseComentario.error
             });
         }
 
-
+        //console.log('Comentario:', comentario)
     try {
         
         //como hacer para que el id del usuario que crea el comentario se guarde
         //const user_id = 1//req.user.id // asumiendo que el id del usuario está en req.user.id
         //user_id = 1 // temporalmente, deberías obtenerlo del token JWT o de la sesión del usuario
         const id = uuidv4() // generar un nuevo UUID para el comentario
-        const result = await CreateComentario(id,publicacion_id,user_id,comentario)
+        console.log('ID del comentario:', id, publicacion_id, user_id, texto)
+        const result = await createComentario([id,publicacion_id,user_id,texto])
         console.log(result)
         if(!result){
             //console.error('Error al crear el comentario', e)
@@ -60,13 +62,13 @@ export async function crearComentario(req, res){
 
         res.status(201).json({
             message: 'Comentario creado exitosamente',
-            comentario
+            comentario: texto
         })
         } catch (error) {
             //console.log('ID del comentario:', id,publicacion_id,user_id,comentario)
         //console.error('Error al crear el comentario:', error)
         res.status(500).json({
-            message: 'Error al crear el comentario'
+            message: 'Error al crear el comentario hola'
         })
     }
 }

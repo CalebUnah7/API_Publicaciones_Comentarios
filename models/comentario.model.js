@@ -2,14 +2,14 @@ import pool from '../config/db.js'
 
 
 //Crear un nuevo comentario
-export async function CreateComentario(id,publicacion_id,user_id,comentario){
+export async function createComentario(comentario){
     //TODO: cambiamos la tabla comentariosPublicaciones realizar sus respectivos
     //TODO: revisar controlador
     const query = `INSERT INTO comentariosPublicaciones (id,publicacion_id,user_id,comentario)
-                    VALUES (?,?,?,?)`
-    const [rows] = await pool.query(query,[id,publicacion_id,user_id,comentario])
+                    VALUES (?,?,UUID_TO_BIN(?),?)`
+    const [result] = await pool.query(query,[...comentario])
 
-    return rows
+    return result
 }
 
 

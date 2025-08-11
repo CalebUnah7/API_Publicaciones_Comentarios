@@ -12,7 +12,7 @@ export const register = async (user) => {
       must_change_password, 
       role
     )
-    VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?)
+    VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, false, ?)
   `
   // user = [id, email, handle, nombre, password_hash, must_change_password, role]
   const [rows] = await pool.query(query, [...user])

@@ -2,29 +2,29 @@
 GET http://localhost:3000/api/publicaciones
 
 ### Ver publicacion por ID
-GET http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
+GET http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af
 
 
 ### Ver comentarios de una publicacion
-GET http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a/comentarios
+GET http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af/comentarios
 
 ### Crear un comentario (requiere token)
-POST http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a/comentarios
+POST http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af/comentarios
 Content-Type: application/json
-Authorization: Bearer <token_jwt>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODk3Mjk3LCJleHAiOjE3NTQ5NDA0OTd9.En6T_yMM4So7juCHutTw2pCsNoULfRVWo3zFc-4wxxA
 
 {
-    "comentario": "Interesante, muy informativo."
+    "contenido": "Pura pérdida con esto de la IA, no sirve para nada"
 }
 
 ### Crear publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer <token_jwt>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODk3Mjk3LCJleHAiOjE3NTQ5NDA0OTd9.En6T_yMM4So7juCHutTw2pCsNoULfRVWo3zFc-4wxxA
 
 {
-    "titulo": "Nueva publicación",
-    "contenido": "Contenido de ejemplo..."
+    "titulo": "Estamos lanzando una nueva IA",
+    "contenido": "Hoy lanzamos una nueva IA que promete revolucionar el mundo de la tecnología. ¡Mantente atento para más actualizaciones!"
 }
 
 ### Editar publicación (solo el autor) 
@@ -46,9 +46,9 @@ POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
-    "nombre": "Jason Daniel VM",
-    "email": "jasonmejia@unah.hn",
-    "handle": "JasDan",
+    "nombre": "Caleb Ayala",
+    "email": "calebayala777@gmail.com",
+    "handle": "CalebAyala",
     "password": "palabraPase115",
     "role": "user"
 }
@@ -58,7 +58,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "jasonmejia@unah.hn",
+    "email": "calebayala777@gmail.com",
     "password": "palabraPase115"
 }
 
