@@ -81,13 +81,6 @@ export const createPublicacion = async (req, res) => {
 // Controlador para editar una publicación
 export const editPublicacion = async (req, res) => {
     const { id } = req.params
-    const parsedId = Number(id)
-
-    if (isNaN(parsedId)) {
-        return res.status(400).json({
-            message: 'El id debe ser un número'
-        })
-    }
 
     const data = req.body;
     const { success, error, data: safeData } = validatePublicacion(data)
@@ -97,7 +90,7 @@ export const editPublicacion = async (req, res) => {
     }
 
     try {
-        const publicacion = await getPublicacionesById(parsedId)
+        const publicacion = await getPublicacionesById(id)
 
         if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
             return res.status(404).json({
@@ -116,7 +109,7 @@ export const editPublicacion = async (req, res) => {
             autorId: publicacion.autorId
         }
 
-        const response = await putPublicacion(parsedId, updatedData)
+        const response = await putPublicacion(id, updatedData)
 
         res.json({
             message: 'Publicación editada correctamente',
@@ -136,16 +129,9 @@ export const editPublicacion = async (req, res) => {
 // Se considera "eliminar" como desactivar la publicación, no eliminarla de la base de datos
 export const removePublicacion = async (req, res) => {
     const { id } = req.params
-    const parsedId = Number(id)
-
-    if (isNaN(parsedId)) {
-        return res.status(400).json({
-            message: 'El id debe ser un número'
-        })
-    }
 
     try{
-        const publicacion = await getPublicacionesById(parsedId)
+        const publicacion = await getPublicacionesById(id)
         if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
             return res.status(404).json({
                 message: `La publicación con id ${id} no fue encontrada`
@@ -158,13 +144,14 @@ export const removePublicacion = async (req, res) => {
             });
         }
 
-        const responsePub = await deletePublicacion(parsedId)
+        const responsePub = await deletePublicacion(id)
         res.status(200).json({
             message: 'Publicación removida correctamente',
             response: responsePub
         })
 
-        const responseCom = await deleteComentariosByPublicacionId(parsedId)
+        // Se desactivan los comentarios asociados a la publicación removida
+        const responseCom = await deleteComentariosByPublicacionId(id)
         res.status(200).json({
             message: 'Comentarios asociados removidos correctamente',
             response: responsePub

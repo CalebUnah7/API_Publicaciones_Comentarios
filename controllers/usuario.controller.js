@@ -11,7 +11,7 @@ import {passwordSchema} from '../schemas/password.schema.js'
 
 // Controlador para registrar un nuevo usuario
 export async function registerUser(req, res){
-  //validamos el cuerpo de la solicitud
+    //validamos el cuerpo de la solicitud
   const parseResult = validateUsuario(req.body)
 
   if(!parseResult.success){
@@ -21,35 +21,35 @@ export async function registerUser(req, res){
       errors: parseResult.error.errors
     })
   }
-  const { email, nombre, handle, role } = req.body
+  const { email, nombre, handle, password, role } = req.body
 
   const id = uuidv4()
   console.log(id)
-  const password = Math.random().toString().slice(2, 6)
+  // const password = Math.random().toString().slice(2, 6)
   const password_hash = await bcrypt.hash(password,10)
-  console.log(process.env.RESEND_API_KEY)
+  // console.log(process.env.RESEND_API_KEY)
   
   try {
     const user = await register([ id, email, handle, nombre, password_hash, role ])
     
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    await resend.emails.send({
-      from: 'no-reply@tudominio.com',
-      to: email,
-      subject: 'Creación de cuenta',
-      html: `<p>Tu contraseña temporal es: <strong>1234</strong></p>`
-    })
+    // const resend = new Resend(process.env.RESEND_API_KEY)
+    // await resend.emails.send({
+    //   from: 'no-reply@tudominio.com',
+    //   to: email,
+    //   subject: 'Creación de cuenta',
+    //   html: `<p>Tu contraseña temporal es: <strong>1234</strong></p>`
+    // })
 
     res.json({
       success: true,
-      message: 'Usuario registrado. Se envió la contraseña temporal al correo electrónico.',
+      message: 'Usuario registrado correctamente.',
       data: { id, email, nombre, handle }
     })
 
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: 'Error al registrar el usuario',
+      message: 'Error al registrar el usuario.',
       error: error.message
     })
   }

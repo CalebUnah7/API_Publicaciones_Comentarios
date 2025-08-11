@@ -3,7 +3,10 @@ import pool from '../config/db.js'
 // Obtener todas las publicaciones activas con paginación
 export const getAllPublicaciones = async (limit = 10, offset = 0) => {
     const query = `
-        SELECT p.id, p.titulo, p.contenido,
+        SELECT 
+            p.id, 
+            p.titulo, 
+            p.contenido,
             BIN_TO_UUID(p.autorID) AS autorID,
             u.nombre AS autor_nombre,
             u.handle AS autor_handle,
@@ -21,7 +24,10 @@ export const getAllPublicaciones = async (limit = 10, offset = 0) => {
 // Obtener una publicación por ID
 export const getPublicacionById = async (id) => {
     const query = `
-        SELECT p.id, p.titulo, p.contenido,
+        SELECT 
+            p.id, 
+            p.titulo, 
+            p.contenido,
             BIN_TO_UUID(p.autorID) AS autorID,
             u.nombre AS autor_nombre,
             u.handle AS autor_handle,
@@ -37,7 +43,12 @@ export const getPublicacionById = async (id) => {
 // Crear una nueva publicación
 export const postPublicacion = async (id, titulo, contenido, autorId) =>{
     const query = `
-        INSERT INTO publicaciones (id, titulo, contenido, autorID)
+        INSERT INTO publicaciones (
+            id, 
+            titulo, 
+            contenido, 
+            autorID
+        )
         VALUES ?, ?, ?, UUID_TO_BIN(?));
     `
     const [result] = await pool.query(query, [id, titulo, contenido, autorId])
@@ -52,7 +63,8 @@ export const putPublicacion = async (id, publicacion) =>{
         conn.beginTransaction( );
         const { titulo, contenido } = publicacion
         const query = `
-            UPDATE publicaciones SET titulo = ?, contenido = ? WHERE id = ?;
+            UPDATE publicaciones 
+            SET titulo = ?, contenido = ? WHERE id = ?;
         `
         await conn.execute(query, [titulo, contenido, id])
 

@@ -11,8 +11,16 @@ export async function crearComentario(req, res){
         const {id:publicacion_id} = req.params
         const user_id = req.user.id
         const comentarioOriginal = req.body.comentario
-        
-        const publicacion = await getPublicacionById(publicacion_id)
+    
+        const parsedPubId = Number(publicacion_id)
+
+        if (isNaN(parsedPubId)) {
+            return res.status(400).json({
+                message: 'Id de publicación incorrecto'
+            })
+        }
+
+        const publicacion = await getPublicacionById(parsedPubId)
 
         if(!publicacion || publicacion.length === 0){
             return res.status(404).json({
@@ -67,19 +75,13 @@ export async function getComentarios(req,res){
     try {
     const {id:publicacion_id} = req.params
 
-    /* const publicacion = await getComentariosByPublicacionId(publicacion_id)
+    const publicacion = await getPublicacionById(publicacion_id)
 
     if(!publicacion || publicacion.length === 0){
         return res.status(404).json({
             message: 'La publicacion no fue encontrada'
         })
-    }*/
-    
-    /* if (!publicacion.activo) {
-        return res.status(400).json({
-            message: 'La publicación no se encuentra activa'
-        });
-    }*/
+    }
 
     const comentarios = await getComentariosByPublicacionId(publicacion_id)
     if(!comentarios || comentarios.length === 0){
