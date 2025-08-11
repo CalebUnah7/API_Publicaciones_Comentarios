@@ -149,8 +149,8 @@ server.js
    ```
 
 * **Iniciar el servidor**
-   ```bash 
- npm run dev
+   ```bash
+  npm run dev
    ```
 
 
