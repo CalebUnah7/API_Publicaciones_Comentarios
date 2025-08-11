@@ -6,7 +6,7 @@ import {
         putPublicacion,  
         deletePublicacion 
     } from "../models/publicacion.model.js";
-import { getUserIdByHandle } from "../models/usuario.model.js";
+import { loginUserByHandle } from "../models/usuario.model.js";
 import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -64,7 +64,7 @@ export const createPublicacion = async (req, res) => {
     const id = uuidv4();
 
     try{
-        const userFound = await getUserIdByHandle(safeData.handle)
+        const userFound = await loginUserByHandle(safeData.handle)
         if (!userFound) {
             return res.status(404).json({
                 message: `El usuario con handle @${safeData.handle} no fue encontrado`

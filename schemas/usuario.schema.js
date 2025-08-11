@@ -10,7 +10,7 @@ const usuarioSchema = zod.object({
         message: "El nombre no puede ser tan corto (min 3 caracteres)"
     }).max(100, {
         message: "El nombre no puede ser tan largo (max 100 caracteres)"}),
-    "email": zod.string().z.email({
+    "email": zod.string().email({
         message: "El email debe ser un correo electrónico válido"
     }),
     "handle": zod.string().min(3, {

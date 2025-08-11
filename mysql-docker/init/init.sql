@@ -1,3 +1,15 @@
+CREATE TABLE users (
+  id BINARY(16) PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  handle VARCHAR(50) UNIQUE NOT NULL,
+  nombre VARCHAR(100) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  must_change_password BOOLEAN DEFAULT TRUE,
+  role ENUM('user', 'admin') DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 CREATE TABLE publicaciones (
     id char(36) primary key,
     titulo varchar(255) not null,
@@ -20,16 +32,6 @@ CREATE TABLE comentariosPublicaciones (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE users (
-  id BINARY(16) PRIMARY KEY,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  handle VARCHAR(50) UNIQUE NOT NULL,
-  nombre VARCHAR(100) NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
-  must_change_password BOOLEAN DEFAULT TRUE,
-  role ENUM('user', 'admin') DEFAULT 'user',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 /* Inserciones */
 
