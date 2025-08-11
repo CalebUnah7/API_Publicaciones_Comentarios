@@ -1,6 +1,8 @@
 import zod from 'zod';
 import { passwordSchema } from './password.schema.js';
 
+//Esquema que se encarga de validar los datos de un usuario
+//Requisitos: debe haber un nombre, email, handle(@...) y contraseña
 const usuarioSchema = zod.object({
     "nombre": zod.string({
         message: "El nombre es obligatorio"

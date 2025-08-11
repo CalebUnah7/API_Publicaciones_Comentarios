@@ -3,6 +3,7 @@ import { getUserIdByHandle } from "../models/usuario.model.js";
 import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
 
+// Controlador para obtener todas las publicaciones activas
 export const getAll = async (req, res)=>{
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 10
@@ -23,6 +24,7 @@ export const getAll = async (req, res)=>{
     }
 }
 
+// Controlador para obtener una publicación por ID
 export const getById = async (req, res)=> {
     const {id} = req.params
 
@@ -43,6 +45,7 @@ export const getById = async (req, res)=> {
     }
 }
 
+// Controlador para crear una nueva publicación
 export const createPublicacion = async (req, res) => {
     const data = req.body;
     const { success, error, data: safeData } = validatePublicacion(data)
@@ -75,6 +78,7 @@ export const createPublicacion = async (req, res) => {
     }
 }
 
+// Controlador para editar una publicación
 export const editPublicacion = async (req, res) => {
     const { id } = req.params
     const parsedId = Number(id)
@@ -128,6 +132,8 @@ export const editPublicacion = async (req, res) => {
 
 }
 
+// Controlador para eliminar una publicación
+// Se considera "eliminar" como desactivar la publicación, no eliminarla de la base de datos
 export const removePublicacion = async (req, res) => {
     const { id } = req.params
     const parsedId = Number(id)

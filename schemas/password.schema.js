@@ -1,5 +1,7 @@
 import zod from 'zod';
 
+//Esquema que se encarga de validar las contraseñas
+//Requisitos: entre 7 y 20 caracteres, al menos una mayúscula y un número
 export const passwordSchema = 
     zod.string().min(7, { 
         message: "La contraseña debe tener al menos 7 caracteres"

@@ -1,5 +1,6 @@
 import pool from '../config/db.js'
 
+// Obtener todas las publicaciones activas con paginación
 export const getAllPublicaciones = async(limit=10, offset=0) =>{
     const query = `
         SELECT * FROM publicaciones WHERE activo = true 
@@ -9,6 +10,7 @@ export const getAllPublicaciones = async(limit=10, offset=0) =>{
     return rows
 }
 
+// Obtener una publicación por su ID (solo si está activa)
 export const getPublicacionesById = async (id) =>{
     const query = `
             SELECT * FROM publicaciones WHERE id = ? AND activo = true;
@@ -17,16 +19,18 @@ export const getPublicacionesById = async (id) =>{
     return rows
 }
 
+// Crear una nueva publicación
 export const postPublicacion = async (id, titulo, contenido, autorId) =>{
     const query = `
         INSERT INTO publicaciones (id, titulo, contenido, autorID)
-        VALUES (UUID_TO_BIN(?), ?, ?, UUID_TO_BIN(?));
+        VALUES ?, ?, ?, UUID_TO_BIN(?));
     `
     const [result] = await pool.query(query, [id, titulo, contenido, autorId])
 
     return result
 }
 
+// Actualizar el título y contenido de una publicación
 export const putPublicacion = async (id, publicacion) =>{
     const conn = await pool.getConnection();
     try{
@@ -48,6 +52,7 @@ export const putPublicacion = async (id, publicacion) =>{
     }
 }
 
+// Desactivar una publicación (borrado)
 export const deletePublicacion = async (id) =>{
     const conn = await pool.getConnection();
 

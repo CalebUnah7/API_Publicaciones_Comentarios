@@ -1,5 +1,3 @@
-//TODO: pendiente de realizar
-
 import jwt from 'jsonwebtoken';
 
 // Middleware para verificar el token
@@ -13,7 +11,7 @@ export const verifyToken = (req, res, next) => {
         });
     }
 
-
+    // El formato esperado es "Bearer <token>", separamos y tomamos el token
     const token = authorization.split(' ')[1];
 
     if (!token) {
@@ -26,6 +24,7 @@ export const verifyToken = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+        // Se añade la información del usuario al request
         req.user = {
             id: decoded.id,
             role: decoded.role

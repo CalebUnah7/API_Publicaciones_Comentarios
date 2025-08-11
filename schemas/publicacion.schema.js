@@ -1,5 +1,7 @@
 import zod from 'zod';
 
+//Esquema que se encarga de validar los datos de una publicación
+//Requisitos: debe haber un título, contenido y la ID del Autor
 const publicacionSchema = zod.object({
     "titulo": zod.string({
         message: "El titulo debería ser añadido"
