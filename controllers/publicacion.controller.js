@@ -1,4 +1,11 @@
-import { getAllPublicaciones, getPublicacionesById, postPublicacion, putPublicacion,  deletePublicacion } from "../models/publicacion.model.js";
+import { 
+        getAllPublicaciones, 
+        getPublicacionById, 
+        getPublicacionRemovidaById, 
+        postPublicacion, 
+        putPublicacion,  
+        deletePublicacion 
+    } from "../models/publicacion.model.js";
 import { getUserIdByHandle } from "../models/usuario.model.js";
 import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
@@ -29,7 +36,7 @@ export const getById = async (req, res)=> {
     const {id} = req.params
 
     try{
-        const publicacion = await getPublicacionesById(id)
+        const publicacion = await getPublicacionById(id)
 
         if(!publicacion || publicacion.length === 0){
             return res.status(404).json({
@@ -90,20 +97,22 @@ export const editPublicacion = async (req, res) => {
     }
 
     try {
-        const publicacion = await getPublicacionesById(id)
+        const publicacion = await getPublicacionById(id)
 
         if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
+
+            const publicacionRemovida = await getPublicacionRemovidaById(id)
+            if (publicacionRemovida && publicacionRemovida.length > 0) {
+                return res.status(404).json({
+                    message: 'La publicación ha sido removida'
+                });
+            }
+
             return res.status(404).json({
                 message: `La publicación con id ${id} no fue encontrada`
             });
         }
-
-        if (!publicacion.activo) {
-            return res.status(400).json({
-                message: 'La publicación no se encuentra activa'
-            });
-        }
-
+        
         const updatedData = {
             ...safeData,
             autorId: publicacion.autorId
@@ -131,7 +140,7 @@ export const removePublicacion = async (req, res) => {
     const { id } = req.params
 
     try{
-        const publicacion = await getPublicacionesById(id)
+        const publicacion = await getPublicacionById(id)
         if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
             return res.status(404).json({
                 message: `La publicación con id ${id} no fue encontrada`
