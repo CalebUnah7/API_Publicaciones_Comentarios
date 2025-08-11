@@ -1,5 +1,5 @@
 # API_Publicaciones_Comentarios
-Crearemos una API estilo Blog
+Crearemos una API estilo Blog personal desarrollada con Node.js, Express y MySQL
 
 
 
@@ -39,6 +39,8 @@ Desarrollar una API RESTful utilizando Node.js y Express que permita a los usuar
   /middlewares
   /config
   /utils
+  /schemas
+  /shared
 server.js
 .env
 ```
@@ -80,7 +82,7 @@ server.js
 | Método | Ruta                       | Descripción                                     | Protegido | Observaciones                    |
 |--------|----------------------------|--------------------------------------------------|-----------|----------------------------------|
 | GET    | /api/publicaciones         | Listar todas las publicaciones con paginación   | No        | Pública                          |
-| GET    | /api/publicaciones/:id     | Ver una publicación específica                  | No        | Pública                          |
+| GET    | /api/publicaciones/:id     | Ver una publicación específica                | No        | Pública                          |
 | POST   | /api/publicaciones         | Crear una nueva publicación                     | Sí        | Solo usuario autenticado         |
 | PUT    | /api/publicaciones/:id     | Editar publicación (solo el autor)              | Sí        | Verificar propiedad              |
 | DELETE | /api/publicaciones/:id     | Eliminar publicación (solo el autor)            | Sí        | Verificar propiedad              |
@@ -121,3 +123,26 @@ server.js
 - Documentar los endpoints.
 - Implementar orden descendente por fecha de publicación.
 - Permitir búsquedas por palabra clave en título/contenido.
+
+---
+
+## 🚀 Instalacion
+- Clonar el repositorio
+git clone https://github.com/usuario/API_Publicaciones_Comentarios.git
+
+- Instalar dependencias
+npm install
+
+- Configurar .env
+PORT=
+DB_HOST=
+DB_USER=
+DB_PASS=
+DB_NAME=
+JWT_SECRET=
+
+- Iniciar el servidor
+npm run dev
+
+
+
