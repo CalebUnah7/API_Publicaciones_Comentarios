@@ -40,6 +40,24 @@ export const getPublicacionById = async (id) => {
     return rows
 }
 
+export const getPublicacionRemovidaById = async (id) => {
+    const query = `
+        SELECT 
+            p.id, 
+            p.titulo, 
+            p.contenido,
+            BIN_TO_UUID(p.autorID) AS autorID,
+            u.nombre AS autor_nombre,
+            u.handle AS autor_handle,
+            p.fecha_creacion
+        FROM publicaciones p
+        JOIN users u ON p.autorID = u.id
+        WHERE p.id = ? AND p.activo = FALSE;
+    `
+    const [ rows ] = await pool.query(query, [id]);   
+    return rows
+}
+
 // Crear una nueva publicación
 export const postPublicacion = async (id, titulo, contenido, autorId) =>{
     const query = `
