@@ -11,12 +11,6 @@ export const passwordSchema =
     .refine((password) => /[A-Z]/.test(password), {
         message: "La contraseña debe contener al menos una letra mayúscula",
     })
-    // .refine((password) => /[a-z]/.test(password), {
-    //     message: "La contraseña debe contener al menos una letra minúscula",
-    // })
-    // .refine((password) => /[!@#$%^&*]/.test(password), {
-    //     message: "La contraseña debe contener al menos un carácter especial (!@#$%^&*)",
-    // })
     .refine((password) => /[0-9]/.test(password), { 
         message: "La contraseña debe contener al menos un número", 
     });

@@ -14,7 +14,6 @@ export const register = async (user) => {
     )
     VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, false, ?)
   `
-  // user = [id, email, handle, nombre, password_hash, must_change_password, role]
   const [rows] = await pool.query(query, [...user])
   return rows
 }
@@ -70,20 +69,3 @@ export async function updatePassword(id, password_hash) {
   return rows
 }
 
-
-/*
-export const createUser = async (username, email, hashedPassword) => {
-  const [result] = await pool.query(
-    'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-    [username, email, hashedPassword]
-  );
-  return result;
-};
-
-export const getUserByEmail = async (email) => {
-  const [rows] = await pool.query(
-    'SELECT * FROM users WHERE email = ?',
-    [email]
-  );
-  return rows[0]; 
-};*/

@@ -1,6 +1,3 @@
-
-//TODO: en caso de no tener un schema, validar usando el usuario.schema.js
-
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import {Resend} from 'resend'
@@ -21,25 +18,15 @@ export async function registerUser(req, res){
       error
     })
   }
-  //const { email, nombre, handle, password, role } = req.body
+
   const { email, nombre, handle, password, role } = safeData
   const id = uuidv4()
   console.log(id)
-  // const password = Math.random().toString().slice(2, 6)
   const password_hash = await bcrypt.hash(password,10)
-  // console.log(process.env.RESEND_API_KEY)
-  
+
   try {
     const user = await register([ id, email, handle, nombre, password_hash, role ])
     
-    // const resend = new Resend(process.env.RESEND_API_KEY)
-    // await resend.emails.send({
-    //   from: 'no-reply@tudominio.com',
-    //   to: email,
-    //   subject: 'Creación de cuenta',
-    //   html: `<p>Tu contraseña temporal es: <strong>1234</strong></p>`
-    // })
-
     res.json({
       success: true,
       message: 'Usuario registrado correctamente.',
@@ -68,23 +55,7 @@ export async function login(req,res){
       message: 'Usuario o contraseña incorrectos'
     })
     }
-  // //validar si el usuario cambió la contraseña temporal
-  // if(data.must_change_password){
-  //   const tokenTemporal = jwt.sign({
-  //     id: data.id,
-  //     password: data.password_hash
-  //   }, process.env.JWT_SECRET,
-  //   {  expiresIn: '1h'  
-  //   })
 
-  //   return res.status(401).json({
-  //     success: true,
-  //     message: 'Debe cambiar su contraseña',
-  //     data: {
-  //       token: tokenTemporal,
-  //     }
-  //   })
-  // }
   
   const token = jwt.sign({id: data.id,role: data.role},process.env.JWT_SECRET,
     { algorithm: 'HS256',
@@ -116,24 +87,7 @@ export async function loginByHandle(req,res){
       message: 'Usuario o contraseña incorrectos'
     })
     }
-  // //validar si el usuario cambió la contraseña temporal
-  // if(data.must_change_password){
-  //   const tokenTemporal = jwt.sign({
-  //     id: data.id,
-  //     password: data.password_hash
-  //   }, process.env.JWT_SECRET,
-  //   {  expiresIn: '1h'  
-  //   })
 
-  //   return res.status(401).json({
-  //     success: true,
-  //     message: 'Debe cambiar su contraseña',
-  //     data: {
-  //       token: tokenTemporal,
-  //     }
-  //   })
-  // }
-  
   const token = jwt.sign({id: data.id,role: data.role},process.env.JWT_SECRET,
     { algorithm: 'HS256',
       expiresIn: '12h'

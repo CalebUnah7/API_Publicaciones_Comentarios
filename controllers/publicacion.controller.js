@@ -25,7 +25,7 @@ export const getAll = async (req, res)=>{
             publicaciones
         })
     } catch (error){
-        res.status(500).json({
+             res.status(500).json({
             message: 'Error al obtener las publicaciones'
         })
     }

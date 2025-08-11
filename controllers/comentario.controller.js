@@ -6,20 +6,11 @@ import { v4 as uuidv4 } from 'uuid'
 import sanitizeHtml from 'sanitize-html'
 
 export async function crearComentario(req, res){
-    //TODO: TOMAR EL ID DEL TOKEN Y BUSCAR EL NOMBRE DEL USUARIO,
-    //TODO: PARA QUE AL MOMENTO DE HACER UNA RESPUESTA JSON,
-    //TODO: SE ENVÍE EL USUARIO, LA FECHA, Y LO QUE COMENTÓ.
+
         const {id:publicacion_id} = req.params
         const user_id = req.user.id
         const {contenido} = req.body
-       // console.log(user_id, publicacion_id, contenido)
-       /* const parsedPubId = Number(publicacion_id)
-
-        if (isNaN(parsedPubId)) {
-            return res.status(400).json({
-                message: 'Id de publicación incorrecto'
-            })
-        }*/
+     
 
         const publicacion = await getPublicacionById(publicacion_id)
 
@@ -42,8 +33,6 @@ export async function crearComentario(req, res){
                 error: parseComentario.error
             });
         }
-
-        //console.log('Comentario:', comentario)
     try {
         
         //como hacer para que el id del usuario que crea el comentario se guarde
@@ -65,8 +54,7 @@ export async function crearComentario(req, res){
             comentario: texto
         })
         } catch (error) {
-            //console.log('ID del comentario:', id,publicacion_id,user_id,comentario)
-        //console.error('Error al crear el comentario:', error)
+            
         res.status(500).json({
             message: 'Error al crear el comentario hola'
         })

@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/publicaciones
 
 ### Ver publicacion por ID
-GET http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af
+GET http://localhost:3000/api/publicaciones/9ceacd54-76f9-11f0-8970-46de13098a39
 
 
 ### Ver comentarios de una publicacion
