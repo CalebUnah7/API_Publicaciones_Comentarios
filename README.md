@@ -126,23 +126,32 @@ server.js
 
 ---
 
-## 🚀 Instalacion
-- Clonar el repositorio
-git clone https://github.com/usuario/API_Publicaciones_Comentarios.git
+## 🚀 Instalación
 
-- Instalar dependencias
-npm install
+* **Clonar el repositorio**
+   ```bash
+  git clone https://github.com/CalebUnah7/API_Publicaciones_Comentarios.git
+   ```
 
-- Configurar .env
-PORT=
-DB_HOST=
-DB_USER=
-DB_PASS=
-DB_NAME=
-JWT_SECRET=
+* **Instalar dependencias**
+   ```bash
+  npm install
+   ```
 
-- Iniciar el servidor
-npm run dev
+* **Configurar .env**
+   ```bash
+  PORT=
+  DB_HOST=
+  DB_USER=
+  DB_PASS=
+  DB_NAME=
+  JWT_SECRET=
+   ```
+
+* **Iniciar el servidor**
+   ```bash 
+ npm run dev
+   ```
 
 
 
