@@ -4,23 +4,30 @@ import {
         getPublicacionRemovidaById, 
         postPublicacion, 
         putPublicacion,  
-        deletePublicacion 
+        deletePublicacion,
+        getTotalPublicaciones
     } from "../models/publicacion.model.js";
 import { loginUserByHandle } from "../models/usuario.model.js";
 import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
 
-// Controlador para obtener todas las publicaciones activas
+// Obtener todas la publicaciones activas con paginación
 export const getAll = async (req, res)=>{
+    //Se obtienen parámetros de paginación con valores por defecto
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 10
     const offset = (page -1) * limit
 
     try {
+        //Total registros activos
+        const totalRegistros= await getTotalPublicaciones()
+        const totalPaginas= Math.ceil(totalRegistros/limit)
+
+        //Publicaciones paginadas
         const publicaciones = await getAllPublicaciones (limit, offset)
         
         res.status(200).json({
-            page,
+            page: `${page}/${totalPaginas}`,
             total: publicaciones.length,
             publicaciones
         })
@@ -31,7 +38,7 @@ export const getAll = async (req, res)=>{
     }
 }
 
-// Controlador para obtener una publicación por ID
+// Obtener una publicación por ID
 export const getById = async (req, res)=> {
     const {id} = req.params
 

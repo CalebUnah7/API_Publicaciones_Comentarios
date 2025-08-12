@@ -118,3 +118,14 @@ export const deletePublicacion = async (id) =>{
         conn.release();
     }
 }
+
+
+//Obtener el total de publicaciones (para poder calcular las paginas)
+export const getTotalPublicaciones = async ()=>{
+    const query =
+    `SELECT COUNT(*) AS total FROM publicaciones
+    WHERE activo = TRUE`
+    ;
+    const [rows] = await pool.query(query)
+    return rows [0].total
+}
