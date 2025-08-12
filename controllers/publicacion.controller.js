@@ -83,8 +83,7 @@ export const createPublicacion = async (req, res) => {
 
        // const response = await postPublicacion(id, safeData.titulo, safeData.contenido, userFound.id)
 
-        res
-            .status(201).json({
+        res.status(201).json({
                 success: true,
                 message: "Publicacion creada exitosamente",
                 id: id
