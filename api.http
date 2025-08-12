@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/publicaciones
 
 ### Ver publicacion por ID
-GET http://localhost:3000/api/publicaciones/9ceacd54-76f9-11f0-8970-46de13098a39
+GET http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af
 
 
 ### Ver comentarios de una publicacion
@@ -20,26 +20,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlL
 ### Crear publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDIxODg3LCJleHAiOjE3NTUwNjUwODd9.HSzTfsdIYf8ZA5_wRkIsfrDV2wuyP2ZwPPdA2ovSBGY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDEzODY1LCJleHAiOjE3NTUwNTcwNjV9.1AKvubCGFxxHjTF3Fcz7pcjxENo2OF379Jf4JtDs-eU
 
 {
-    "titulo": "Publicacion de prueba",
-    "contenido": "Ejemplo2"
+    "titulo": "Musica y arte",
+    "contenido": "La música y el arte es la forma en la que el alma se expresa"
 }
 
 ### Editar publicación (solo el autor) 
-PUT http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
+PUT http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDE4NDkxLCJleHAiOjE3NTUwNjE2OTF9.jqH3dzKU_BRd5V9_L6N5RUNRIQIyrrpsh9ArktcxTrk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDEzODY1LCJleHAiOjE3NTUwNTcwNjV9.1AKvubCGFxxHjTF3Fcz7pcjxENo2OF379Jf4JtDs-eU
 
 {
-    "titulo": "Nuevo Título",
+    "titulo": "Actualizdo de prueba",
     "contenido": "Contenido modificado..."
 }
 
 ### Eliminar publicación (solo el autor) 
-DELETE http://localhost:3000/api/publicaciones/1a32716a-d325-4ed5-a8f0-a4ad9f18fed9
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0OTcwNjc1LCJleHAiOjE3NTUwMTM4NzV9.bumB_RrjuaIzc7jCR4yRmYKnWMGMdX3gSnk92IiABTo
+DELETE http://localhost:3000/api/publicaciones/96b4b90d-952c-4869-8725-f27f032a04a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDEzODY1LCJleHAiOjE3NTUwNTcwNjV9.1AKvubCGFxxHjTF3Fcz7pcjxENo2OF379Jf4JtDs-eU
+
+
 ### Registrar Usuario
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json

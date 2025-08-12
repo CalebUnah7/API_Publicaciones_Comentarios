@@ -79,16 +79,16 @@ export const putPublicacion = async (id, publicacion) =>{
     const conn = await pool.getConnection();
     try{
         conn.beginTransaction( );
-        const { titulo, contenido } = publicacion
+        const { titulo, contenido,autorId } = publicacion
         const query = `
             UPDATE publicaciones 
-            SET titulo = ?, contenido = ? WHERE id = ?;
+            SET titulo = ?, contenido = ? WHERE id = ?  AND autorID = UUID_TO_BIN(?);
         `
-        await conn.execute(query, [titulo, contenido, id])
+        const [result] = await conn.execute(query, [titulo, contenido, id, autorId])
 
         conn.commit();
 
-        return { id, ...publicacion };
+        return result.affectedRows > 0
     } catch (error) {
         await conn.rollback();
         throw error;
@@ -98,19 +98,19 @@ export const putPublicacion = async (id, publicacion) =>{
 }
 
 // Desactivar una publicación (borrado)
-export const deletePublicacion = async (id) =>{
+export const deletePublicacion = async (id,autorId) =>{
     const conn = await pool.getConnection();
 
     try{
         conn.beginTransaction( );
 
         const query = `
-            UPDATE publicaciones SET activo = 0 WHERE id = ?;
+            UPDATE publicaciones SET activo = 0 WHERE id = ? AND autorID = UUID_TO_BIN(?);
         `
-        await conn.execute(query, [id])
+        const [result] = await conn.execute(query, [id,autorId])
         conn.commit();
 
-        return { id, message: 'Publicacion desactivada correctamente' };
+        return result.affectedRows > 0
     } catch (error) {
         await conn.rollback();
         throw error;
@@ -128,4 +128,13 @@ export const getTotalPublicaciones = async ()=>{
     ;
     const [rows] = await pool.query(query)
     return rows [0].total
+}
+
+export const deleteComentariosByPublicacionId = async(id)=>{
+    const query = `UPDATE comentariosPublicaciones SET activo = 0 
+                   WHERE publicacion_id = ?`
+
+    const [result] = await pool.query(query,[id])
+
+    return result.affectedRows > 0
 }

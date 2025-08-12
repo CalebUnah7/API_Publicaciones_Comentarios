@@ -7,6 +7,7 @@ import {
         deletePublicacion,
         getTotalPublicaciones
     } from "../models/publicacion.model.js";
+import {deleteComentariosByPublicacionId} from "../models/comentario.model.js"
 import { loginUserByHandle } from "../models/usuario.model.js";
 import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
@@ -105,7 +106,7 @@ export const createPublicacion = async (req, res) => {
 // Controlador para editar una publicación
 export const editPublicacion = async (req, res) => {
     const { id } = req.params
-
+    const autorId = req.user.id
     const data = req.body;
     //const { success, error, data: safeData } = validatePublicacion(data)
 
@@ -137,14 +138,23 @@ export const editPublicacion = async (req, res) => {
         
         const updatedData = {
             ...safeData,
-            autorId: publicacion.autorId
+            autorId: autorId
         }
-
+        //console.log(updatedData)
         const response = await putPublicacion(id, updatedData)
-
+        //console.log(response)
+        if(!response){
+            return res.status(400).json({
+                message: `No se pudo actualizar la publicación, verifique que el autor sea el mismo`
+            })
+        }
+        
         res.json({
             message: 'Publicación editada correctamente',
-            producto: response
+            publicacion: {
+                titulo: safeData.titulo,
+                contenido: safeData.contenido
+            }
         });
     
     } catch (error) {
@@ -160,7 +170,7 @@ export const editPublicacion = async (req, res) => {
 // Se considera "eliminar" como desactivar la publicación, no eliminarla de la base de datos
 export const removePublicacion = async (req, res) => {
     const { id } = req.params
-
+    const autorId = req.user.id
     try{
         const publicacion = await getPublicacionById(id)
         if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
@@ -169,23 +179,27 @@ export const removePublicacion = async (req, res) => {
             });
         }
 
-        if (!publicacion.activo) {
+       /* if (!publicacion.activo) {
             return res.status(400).json({
                 message: 'La publicación ya ha sido removida'
             });
-        }
+        }*/
 
-        const responsePub = await deletePublicacion(id)
-        res.status(200).json({
-            message: 'Publicación removida correctamente',
-            response: responsePub
-        })
+        const responsePub = await deletePublicacion(id,autorId)
+        console.log(responsePub)
+        if(!responsePub){
+            return res.status(400).json({
+                message: `No se pudo remover la publicación, verifique que el autor sea el mismo`
+            })
+        }
+        /*res.status(200).json({
+            message: 'Publicación removida correctamente'
+        })*/
 
         // Se desactivan los comentarios asociados a la publicación removida
         const responseCom = await deleteComentariosByPublicacionId(id)
         res.status(200).json({
-            message: 'Comentarios asociados removidos correctamente',
-            response: responsePub
+            message: 'Publicacion y Comentarios asociados removidos correctamente'
         })
 
     } catch (error) {
