@@ -8,7 +8,6 @@ import {
     
 }   from '../controllers/publicacion.controller.js'
 import { verifyToken } from '../middlewares/verifyToken.js';
-import { publicacionSchema } from '../schemas/publicacion.schema.js'
 import { validatePublicacion } from '../middlewares/validatePublicacion.js';
 
 

@@ -2,7 +2,7 @@ import zod from 'zod';
 
 //Esquema que se encarga de validar los datos de un comentario
 //Requisitos: debe haber contenido, la ID de la publicación y la ID del Autor
-const comentarioSchema = zod.object({
+export const comentarioSchema = zod.object({
     "contenido": zod.string({
         message: "El comentario debe de tener contenido"
     }).min(1, {

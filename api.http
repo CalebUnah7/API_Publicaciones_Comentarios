@@ -9,18 +9,18 @@ GET http://localhost:3000/api/publicaciones/9ceacd54-76f9-11f0-8970-46de13098a39
 GET http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af/comentarios
 
 ### Crear un comentario (requiere token)
-POST http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af/comentarios
+POST http://localhost:3000/api/publicaciones/b0f6544e-553c-40f7-a20e-6c7a9686474b/comentarios
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODk3Mjk3LCJleHAiOjE3NTQ5NDA0OTd9.En6T_yMM4So7juCHutTw2pCsNoULfRVWo3zFc-4wxxA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDIxODg3LCJleHAiOjE3NTUwNjUwODd9.HSzTfsdIYf8ZA5_wRkIsfrDV2wuyP2ZwPPdA2ovSBGY
 
 {
-    "contenido": "Pura pérdida con esto de la IA, no sirve para nada"
+    "contenido": "ejemplo"
 }
 
 ### Crear publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDE3ODg0LCJleHAiOjE3NTUwNjEwODR9.3NijZfWYd31PpYfGYHHi7VrhY21u4x5J8Y4w-JojeXI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDIxODg3LCJleHAiOjE3NTUwNjUwODd9.HSzTfsdIYf8ZA5_wRkIsfrDV2wuyP2ZwPPdA2ovSBGY
 
 {
     "titulo": "Publicacion de prueba",
