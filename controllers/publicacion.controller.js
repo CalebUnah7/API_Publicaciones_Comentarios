@@ -62,11 +62,15 @@ export const getById = async (req, res)=> {
 // Controlador para crear una nueva publicación
 export const createPublicacion = async (req, res) => {
     const data = req.body;
-    const { success, error, data: safeData } = validatePublicacion(data)
+    //const { success, error, data: safeData } = validatePublicacion(data)
 
-    if (!success) {
-        res.status(400).json(error)
-    }
+    //if (!success) {
+ 
+        //return res.status(400).json({
+            //status:"error",
+            //errores:error.errors.map(err=>err.message)
+        //})
+    //}
 
     const id = uuidv4();
 
@@ -103,11 +107,16 @@ export const editPublicacion = async (req, res) => {
     const { id } = req.params
 
     const data = req.body;
-    const { success, error, data: safeData } = validatePublicacion(data)
+    //const { success, error, data: safeData } = validatePublicacion(data)
 
-    if (!success) {
-        res.status(400).json(error);
-    }
+    //if (!success) {
+        //const errores= error.errors.map(err=>err.message)
+
+       // return res.status(400).json({
+            //status:"error",
+           // errores
+        //})
+    //}
 
     try {
         const publicacion = await getPublicacionById(id)

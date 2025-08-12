@@ -20,17 +20,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlL
 ### Crear publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0OTcxMTg0LCJleHAiOjE3NTUwMTQzODR9.ArKfzvaNilWLAF1j7CyQnjzssScojotrjYCeiXX8jc4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDE3ODg0LCJleHAiOjE3NTUwNjEwODR9.3NijZfWYd31PpYfGYHHi7VrhY21u4x5J8Y4w-JojeXI
 
 {
     "titulo": "Publicacion de prueba",
-    "contenido": "Ejemplo de prueba para crear publicaciones2"
+    "contenido": "Ejemplo2"
 }
 
 ### Editar publicación (solo el autor) 
 PUT http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
 Content-Type: application/json
-Authorization: Bearer <token_jwt>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDE4NDkxLCJleHAiOjE3NTUwNjE2OTF9.jqH3dzKU_BRd5V9_L6N5RUNRIQIyrrpsh9ArktcxTrk
 
 {
     "titulo": "Nuevo Título",
