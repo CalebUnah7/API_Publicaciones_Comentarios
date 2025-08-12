@@ -1,23 +1,49 @@
 import { error } from 'console'
-import { CreateComentario,getComentariosByPublicacionId } from '../models/comentario.model.js'
+import { createComentario,getComentariosByPublicacionId } from '../models/comentario.model.js'
 import { getPublicacionById } from '../models/publicacion.model.js'
-import { validateComentario} from '../utils/validateComentario.js'
+import { validateComentario} from '../schemas/comentario.schema.js'
 import { v4 as uuidv4 } from 'uuid'
+import sanitizeHtml from 'sanitize-html'
 
-//TODO: validar usando el comentario.schema.js (validateComentario)
-//TODO: validar que la publicación exista con getPublicacionById
 export async function crearComentario(req, res){
-    try {
-        const {comentario} = req.body
+
         const {id:publicacion_id} = req.params
+        const user_id = req.user.id
+        const {contenido} = req.body
+     
+
+        const publicacion = await getPublicacionById(publicacion_id)
+
+        if(!publicacion || publicacion.length === 0){
+            return res.status(404).json({
+                message: 'La publicacion no fue encontrada'
+            })
+        }
+        
+        //hacemos la sanitización del comentario
+        const texto = sanitizeHtml(contenido,{
+            allowedTags : [], // No se permiten etiquetas HTML
+            AllowedAtributes : {} // tampoco se permiten atributos
+        })
+
+        const parseComentario = validateComentario({contenido: texto})
+        if (!parseComentario.success) {
+            return res.status(400).json({
+                message: 'Error de validación',
+                error: parseComentario.error
+            });
+        }
+    try {
+        
         //como hacer para que el id del usuario que crea el comentario se guarde
-        const user_id = 1//req.user.id // asumiendo que el id del usuario está en req.user.id
+        //const user_id = 1//req.user.id // asumiendo que el id del usuario está en req.user.id
         //user_id = 1 // temporalmente, deberías obtenerlo del token JWT o de la sesión del usuario
-        const id2 = uuidv4() // generar un nuevo UUID para el comentario
-        const result = await CreateComentario(id2,publicacion_id,user_id,comentario)
+        const id = uuidv4() // generar un nuevo UUID para el comentario
+        console.log('ID del comentario:', id, publicacion_id, user_id, texto)
+        const result = await createComentario([id,publicacion_id,user_id,texto])
         console.log(result)
         if(!result){
-            console.error('Error al crear el comentario', e)
+            //console.error('Error al crear el comentario', e)
             return res.status(400).json({
                 message: 'Error al crear el comentario'
             })
@@ -25,13 +51,12 @@ export async function crearComentario(req, res){
 
         res.status(201).json({
             message: 'Comentario creado exitosamente',
-            comentario
+            comentario: texto
         })
         } catch (error) {
-            //console.log('ID del comentario:', id,publicacion_id,user_id,comentario)
-        console.error('Error al crear el comentario:', error)
+            
         res.status(500).json({
-            message: 'Error al crear el comentario'
+            message: 'Error al crear el comentario hola'
         })
     }
 }
@@ -40,18 +65,12 @@ export async function getComentarios(req,res){
     try {
     const {id:publicacion_id} = req.params
 
-    const publicacion = await getPublicacionesById(publicacion_id)
+    const publicacion = await getPublicacionById(publicacion_id)
 
     if(!publicacion || publicacion.length === 0){
         return res.status(404).json({
             message: 'La publicacion no fue encontrada'
         })
-    }
-    
-    if (!publicacion.activo) {
-        return res.status(400).json({
-            message: 'La publicación no se encuentra activa'
-        });
     }
 
     const comentarios = await getComentariosByPublicacionId(publicacion_id)

@@ -1,5 +1,7 @@
 import zod from 'zod';
 
+//Esquema que se encarga de validar las contraseñas
+//Requisitos: entre 7 y 20 caracteres, al menos una mayúscula y un número
 export const passwordSchema = 
     zod.string().min(7, { 
         message: "La contraseña debe tener al menos 7 caracteres"
@@ -9,7 +11,7 @@ export const passwordSchema =
     .refine((password) => /[A-Z]/.test(password), {
         message: "La contraseña debe contener al menos una letra mayúscula",
     })
-    // .refine((password) => /[a-z]/.test(password), {
+     // .refine((password) => /[a-z]/.test(password), {
     //     message: "La contraseña debe contener al menos una letra minúscula",
     // })
     // .refine((password) => /[!@#$%^&*]/.test(password), {
