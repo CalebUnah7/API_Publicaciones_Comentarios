@@ -67,7 +67,7 @@ export const postPublicacion = async (id, titulo, contenido, autorId) =>{
             contenido, 
             autorID
         )
-        VALUES ?, ?, ?, UUID_TO_BIN(?));
+        VALUES (?, ?, ?, UUID_TO_BIN(?));
     `
     const [result] = await pool.query(query, [id, titulo, contenido, autorId])
 

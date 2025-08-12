@@ -20,11 +20,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlL
 ### Crear publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODk3Mjk3LCJleHAiOjE3NTQ5NDA0OTd9.En6T_yMM4So7juCHutTw2pCsNoULfRVWo3zFc-4wxxA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0OTcxMTg0LCJleHAiOjE3NTUwMTQzODR9.ArKfzvaNilWLAF1j7CyQnjzssScojotrjYCeiXX8jc4
 
 {
-    "titulo": "Estamos lanzando una nueva IA",
-    "contenido": "Hoy lanzamos una nueva IA que promete revolucionar el mundo de la tecnología. ¡Mantente atento para más actualizaciones!"
+    "titulo": "Publicacion de prueba",
+    "contenido": "Ejemplo de prueba para crear publicaciones2"
 }
 
 ### Editar publicación (solo el autor) 
@@ -38,9 +38,8 @@ Authorization: Bearer <token_jwt>
 }
 
 ### Eliminar publicación (solo el autor) 
-DELETE http://localhost:3000/api/publicaciones/6890628e-7266-11f0-b29f-2e22b3c7062a
-Authorization: Bearer <token_jwt>
-
+DELETE http://localhost:3000/api/publicaciones/1a32716a-d325-4ed5-a8f0-a4ad9f18fed9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0OTcwNjc1LCJleHAiOjE3NTUwMTM4NzV9.bumB_RrjuaIzc7jCR4yRmYKnWMGMdX3gSnk92IiABTo
 ### Registrar Usuario
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json

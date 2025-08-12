@@ -71,18 +71,25 @@ export const createPublicacion = async (req, res) => {
     const id = uuidv4();
 
     try{
-        const userFound = await loginUserByHandle(safeData.handle)
-        if (!userFound) {
-            return res.status(404).json({
-                message: `El usuario con handle @${safeData.handle} no fue encontrado`
-            });
-        }
+        const autorId = req.user.id; // ya viene del token validado
+        const response = await postPublicacion(id, safeData.titulo, safeData.contenido, autorId);
 
-        const response = await postPublicacion(id, safeData.titulo, safeData.contenido, userFound.id)
+        //const userFound = await loginUserByHandle(safeData.handle)
+       // if (!userFound) {
+          //  return res.status(404).json({
+              //  message: `El usuario con handle @${safeData.handle} no fue encontrado`
+          //  });
+      //  }
+
+       // const response = await postPublicacion(id, safeData.titulo, safeData.contenido, userFound.id)
 
         res
-            .status(201) // establece el código de estado HTTP a 201 (Creado)
-            .json(response)
+            .status(201).json({
+                success: true,
+                message: "Publicacion creada exitosamente",
+                id: id
+            })
+
 
     } catch (error) {
         console.error(error);
