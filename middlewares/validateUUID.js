@@ -1,16 +1,19 @@
 import { validate as isUuid } from 'uuid';
-import Respuestas from '../utils/respuestas.js';
+import HTTPCodes from '../shared/codes.js';
+import { AppError } from '../utils/AppError.js';
 
 // Middleware que se encarga de valdidar que el ID proporcionado en los parámetros de la ruta es un UUID válido
 export function validateUUID(req, res, next) {
     const { id } = req.params;
     // Verificar si el ID está presente
     if (!id) {
-        return Respuestas.errorInvalid(res, 'Se requiere un ID en los parámetros de la ruta');
+        const errData = HTTPCodes.errorBadRequest('Se requiere un ID en los parámetros de la ruta');
+        return next(new AppError(errData.statusCode, errData.message));
     }
     // Verificar si el ID es un UUID válido
     if (!isUuid(id)) {
-        return Respuestas.errorInvalid(res, 'El ID proporcionado no es un UUID válido');
+        const errData = HTTPCodes.errorBadRequest('El ID proporcionado no es un UUID válido');
+        return next(new AppError(errData.statusCode, errData.message));
     }
     
     next();

@@ -5,6 +5,7 @@ import authRoutes from './routes/usuario.routes.js';
 import publicacionRoutes from './routes/publicacion.routes.js'
 import comentarioRoutes from './routes/comentario.routes.js'
 import Respuestas from './utils/respuestas.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 dotenv.config();
 
@@ -31,14 +32,8 @@ app.use((req, res) => {
   return Respuestas.errorNF(res, `Dirección  no encontrada`, detalles)
 })
 
-
-// app.use((req, res) => {
-//     res.status(404).json(
-//         {
-//             message: `${req.url} no encontrada`
-//         }
-//     )
-// })
+// Middleware de manejo de errores (debe ir al final)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

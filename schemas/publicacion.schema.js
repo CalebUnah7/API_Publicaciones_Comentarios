@@ -12,7 +12,9 @@ export const publicacionSchema = zod.object({
         message: "El contenido tiene que ser añadido"
     }).min(10, {
         message: "El contenido debe tener al menos 10 caracteres"
-    })
+    }).max(1000, {
+        message: "El contenido ha exedido el límite de 1000 caracteres"
+    }),
 });
 
 export const validatePublicacion = (publicacion) => {

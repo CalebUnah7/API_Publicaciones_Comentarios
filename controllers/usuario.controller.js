@@ -1,3 +1,5 @@
+import HTTPCodes from "../shared/codes.js";
+import { AppError } from '../utils/AppError.js';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import {Resend} from 'resend'
@@ -13,10 +15,12 @@ export async function registerUser(req, res){
   const { success, error, data:safeData } = parseResult
 
   if(!success){
-    return res.status(400).json({
-      message: 'Datos de usuario inválidos',
-      errores: error.issues.map(e => e.message)
-    })
+    const errData = HTTPCodes.errorBadRequest('Datos de usuario inválidos');
+    throw new AppError(
+      errData.statusCode, 
+      errData.message, 
+      error.issues.map(e => e.message)
+    );
   }
   //const { email, nombre, handle, password, role } = req.body
 
@@ -36,18 +40,20 @@ export async function registerUser(req, res){
     //   html: `<p>Tu contraseña temporal es: <strong>1234</strong></p>`
     // }) 
 
-    res.json({
+    res.status(201).json({
       success: true,
       message: 'Usuario registrado correctamente.',
       data: { id, email, nombre, handle }
     })
 
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: 'Error al registrar el usuario.',
-      error: error.message
-    })
+    console.error('Error al registrar el usuario:', error);
+    const errData = HTTPCodes.errorServer('Error interno del servidor al registrar el usuario');
+    throw new AppError(
+      errData.statusCode, 
+      errData.message, 
+      error.message
+    );
   }
 }
 
@@ -58,15 +64,11 @@ export async function login(req, res) {
   let expiresIn;
 
   if (email && handle) {
-    return res.status(400).json({
-      success: false,
-      message: 'Debe proporcionar solo un email o un handle para iniciar sesión'
-    });
+    const errData = HTTPCodes.errorBadRequest('Debe proporcionar solo un email o un handle para iniciar sesión');
+    throw new AppError(errData.statusCode, errData.message);
   } else if (!email && !handle) {
-    return res.status(400).json({
-      success: false,
-      message: 'Debe proporcionar un email o un handle para iniciar sesión'
-    });
+    const errData = HTTPCodes.errorBadRequest('Debe proporcionar un email o un handle para iniciar sesión');
+    throw new AppError(errData.statusCode, errData.message);
   }
 
   if (email) {
@@ -79,10 +81,8 @@ export async function login(req, res) {
 
   //validamos que las contraseñas coincidan
   if (!data || !await bcrypt.compare(password, data.password_hash)) {
-    return res.status(401).json({
-      success: false,
-      message: 'Usuario o contraseña incorrectos'
-    });
+    const errData = HTTPCodes.errorUnauthorized('Usuario o contraseña incorrectos');
+    throw new AppError(errData.statusCode, errData.message);
   }
 
   // //validar si el usuario cambió la contraseña temporal
@@ -125,11 +125,12 @@ export async function setPassword(req,res){
   const parseResult = passwordSchema.safeParse(req.body)
 
   if(!parseResult.success){
-    return res.status(400).json({
-      success: false,
-      message: 'Contraseña inválida',
-      errors: parseResult.error.errors
-    })
+    const errData = HTTPCodes.errorBadRequest('Contraseña inválida');
+    throw new AppError(
+      errData.statusCode, 
+      errData.message, 
+      parseResult.error.errors.map(e => e.message)
+    );
   }
   
   const {authorization} = req.headers
@@ -139,18 +140,14 @@ export async function setPassword(req,res){
     const {id,password} = jwt.verify(token,process.env.JWT_SECRET)
 
     if(!await bcrypt.compare(old_password,password)){
-        return res.status(401).json({
-          success: false,
-          message: 'La contraseña anterior es incorrecta'
-        })
+      const errData = HTTPCodes.errorUnauthorized('La contraseña anterior es incorrecta');
+      throw new AppError(errData.statusCode, errData.message);
     }
 
     //aquí validamos que las nuevas contraseñas coincidan
     if(new_password !== confirm_password){
-      return res.status(400).json({
-        success: false,
-        message: 'Las nuevas contraseñas no coinciden'
-      })
+      const errData = HTTPCodes.errorBadRequest('Las nuevas contraseñas no coinciden');
+      throw new AppError(errData.statusCode, errData.message);
     }
 
     const setPasswordHash = await bcrypt.hash(confirm_password,10)
@@ -163,9 +160,7 @@ export async function setPassword(req,res){
     })
 
   } catch (error) {
-    res.status(401).json({
-      success: false,
-      message: 'Debe iniciar sesión para cambiar la contraseña',
-    })
+    const errData = HTTPCodes.errorUnauthorized('Debe iniciar sesión para cambiar la contraseña');
+    throw new AppError(errData.statusCode, errData.message, error);
   }
 }

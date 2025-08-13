@@ -1,4 +1,6 @@
 import { error } from 'console'
+import HTTPCodes from "../shared/codes.js";
+import { AppError } from '../utils/AppError.js';
 import { createComentario, getComentariosByPublicacionId } from '../models/comentario.model.js'
 import { v4 as uuidv4 } from 'uuid'
 import sanitizeHtml from 'sanitize-html'
@@ -23,20 +25,19 @@ export async function crearComentario(req, res){
         console.log(result)
         
         if (!result) {
-            return res.status(400).json({
-                message: 'Error al crear el comentario'
-            })
+            const errData = HTTPCodes.errorBadRequest('Error al crear el comentario, verifique la información proporcionada');
+            throw new AppError(errData.statusCode, errData.message);
         }
 
         res.status(201).json({
             message: 'Comentario creado exitosamente',
-            comentario: texto
+            comentario: texto,
+            publicacion: req.publicacion
         })
     } catch (error) {
         console.error('Error al crear comentario:', error)
-        res.status(500).json({
-            message: 'Error interno del servidor al crear el comentario'
-        })
+        const errData = HTTPCodes.errorServer('Error interno del servidor al crear el comentario');
+        throw new AppError(errData.statusCode, errData.message, error);
     }
 }
 
@@ -47,16 +48,14 @@ export async function getComentarios(req, res){
         const comentarios = await getComentariosByPublicacionId(publicacionId)
         
         if (!comentarios || comentarios.length === 0) {
-            return res.status(404).json({
-                message: 'No se encontraron comentarios para esta publicación'
-            })
+            const errData = HTTPCodes.errorNotFound('No se encontraron comentarios para esta publicación');
+            throw new AppError(errData.statusCode, errData.message);
         }
-
-        res.status(200).json({ comentarios })
+        
+        res.status(200).json({ comentarios, publicacion: req.publicacion })
     } catch (error) {
         console.error('Error al obtener comentarios:', error)
-        res.status(500).json({
-            message: 'Error interno del servidor al obtener los comentarios'
-        })
+        const errData = HTTPCodes.errorServer('Error interno del servidor al obtener los comentarios');
+        throw new AppError(errData.statusCode, errData.message, error);
     } 
 }

@@ -1,24 +1,22 @@
 import jwt from 'jsonwebtoken';
+import HTTPCodes from '../shared/codes.js';
+import { AppError } from '../utils/AppError.js';
 
 // Middleware para verificar el token
 export const verifyToken = (req, res, next) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-        return res.status(401).json({
-            success: false,
-            message: 'Debe iniciar sesión para acceder a este recurso',
-        });
+        const errData = HTTPCodes.errorUnauthorized('Debe iniciar sesión para acceder a este recurso');
+        return next(new AppError(errData.statusCode, errData.message));
     }
 
     // El formato esperado es "Bearer <token>", separamos y tomamos el token
     const token = authorization.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({
-            success: false,
-            message: 'Token no proporcionado',
-        });
+        const errData = HTTPCodes.errorUnauthorized('Token no proporcionado');
+        return next(new AppError(errData.statusCode, errData.message));
     }
 
     try {
@@ -32,9 +30,7 @@ export const verifyToken = (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.status(401).json({
-            success: false,
-            message: 'Token inválido o expirado',
-        });
+        const errData = HTTPCodes.errorUnauthorized('Token inválido o expirado');
+        return next(new AppError(errData.statusCode, errData.message, error));
     }
 };

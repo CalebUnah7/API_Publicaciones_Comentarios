@@ -1,3 +1,5 @@
+import HTTPCodes from "../shared/codes.js";
+import { AppError } from '../utils/AppError.js';
 import { 
         getAllPublicaciones, 
         getPublicacionById, 
@@ -32,9 +34,8 @@ export const getAll = async (req, res)=>{
             publicaciones
         })
     } catch (error){
-            res.status(500).json({
-            message: 'Error al obtener las publicaciones'
-        })
+            const errData = HTTPCodes.errorServer('Error interno del servidor al obtener las publicaciones');
+            throw new AppError(errData.statusCode, errData.message, error);
     }
 }
 
@@ -46,16 +47,19 @@ export const getById = async (req, res)=> {
 
     try{
         if (!data) {
-            return res.status(422).json({
-                message: 'Error interno: publicación no valida'
-            });
+            const errData = HTTPCodes.errorUnprocessable('Error interno: publicación no valida');
+            throw new AppError(errData.statusCode, errData.message);
         }
 
         res.status(200).json(data)
     }catch(error){
-        res.status(400).json({
-            message: 'Error al obtener la publicacion'
-        })
+        if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
+        
+        const errData = HTTPCodes.errorServer('Error interno del servidor al obtener la publicación');
+        throw new AppError(errData.statusCode, errData.message, error);
     }
 }
 
@@ -78,14 +82,12 @@ export const getByQuery = async (req, res) => {
     const contenidoNormalizado = normalizarTexto(contenido);
 
     if (!titulo && !contenido) {
-        return res.status(400).json({
-            message: 'Ingrese al menos un parámetro de búsqueda'
-        });
+        const errData = HTTPCodes.errorBadRequest('Ingrese al menos un parámetro de búsqueda');
+        throw new AppError(errData.statusCode, errData.message);
     } else
     if (!tituloNormalizado && !contenidoNormalizado) {
-        return res.status(400).json({
-            message: 'Ingrese parámetros de búsqueda válidos'
-        });
+        const errData = HTTPCodes.errorBadRequest('Ingrese parámetros de búsqueda válidos');
+        throw new AppError(errData.statusCode, errData.message);
     }
     
     try {
@@ -98,18 +100,21 @@ export const getByQuery = async (req, res) => {
             datosFiltrados = await getPublicacionByQuery(tituloNormalizado, '');
         }
 
-        if (!datosFiltrados || datosFiltrados.length === 0) {
-            return res.status(404).json({
-                message: 'No se encontraron publicaciones con los criterios de búsqueda proporcionados'
-            });
+        if ( datosFiltrados.length === 0 || datosFiltrados === undefined) {
+            const errData = HTTPCodes.errorNotFound('No se encontraron publicaciones con los criterios de búsqueda proporcionados');
+            throw new AppError(errData.statusCode, errData.message);
         }
 
         res.status(200).json(datosFiltrados);
     } catch (error) {
+
+        if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
         console.error(error);
-        res.status(500).json({
-            message: 'Error al buscar publicaciones'
-        });
+        const errData = HTTPCodes.errorServer('Error interno del servidor al buscar publicaciones');
+        throw new AppError(errData.statusCode, errData.message, error);
     }
 }
 
@@ -124,9 +129,8 @@ export const createPublicacion = async (req, res) => {
         const response = await postPublicacion(id, data.titulo, data.contenido, autorId);
 
         if (!response) {
-            return res.status(400).json({
-                message: 'Error al crear la publicación, verifique la información proporcionada'
-            });
+            const errData = HTTPCodes.errorBadRequest('Error al crear la publicación, verifique la información proporcionada');
+            throw new AppError(errData.statusCode, errData.message);
         }
         
         res.status(201).json({
@@ -137,10 +141,14 @@ export const createPublicacion = async (req, res) => {
 
 
     } catch (error) {
+        if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
+
         console.error(error);
-        return res.status(500).json({
-            message: 'Error al crear la publicación',
-        });
+        const errData = HTTPCodes.errorServer('Error interno del servidor al crear la publicación');
+        throw new AppError(errData.statusCode, errData.message, error);
     }
 }
 
@@ -155,13 +163,10 @@ export const editPublicacion = async (req, res) => {
             ...data,
             autorId: autorId
         }
-        //console.log(updatedData)
         const response = await putPublicacion(id, updatedData)
-        //console.log(response)
         if(!response){
-            return res.status(400).json({
-                message: `No se pudo actualizar la publicación, verifique que el autor sea el mismo`
-            })
+            const errData = HTTPCodes.errorBadRequest('No se pudo actualizar la publicación, verifique que el autor sea el mismo');
+            throw new AppError(errData.statusCode, errData.message);
         }
         
         res.json({
@@ -173,10 +178,14 @@ export const editPublicacion = async (req, res) => {
         });
     
     } catch (error) {
+        if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
+
         console.error(error);
-        return res.status(500).json({
-            message: 'Error al editar la publicación',
-        });
+        const errData = HTTPCodes.errorServer('Error interno del servidor al editar la publicación');
+        throw new AppError(errData.statusCode, errData.message, error);
     }
 
 }
@@ -190,9 +199,8 @@ export const removePublicacion = async (req, res) => {
         const responsePub = await deletePublicacion(id, autorId)
         console.log(responsePub)
         if(!responsePub){
-            return res.status(400).json({
-                message: `No se pudo remover la publicación, verifique que el autor sea el mismo`
-            })
+            const errData = HTTPCodes.errorBadRequest('No se pudo remover la publicación, verifique que el autor sea el mismo');
+            throw new AppError(errData.statusCode, errData.message);
         }
 
         // Se desactivan los comentarios asociados a la publicación removida
@@ -210,10 +218,14 @@ export const removePublicacion = async (req, res) => {
         })
 
     } catch (error) {
+        if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
+        
         console.error(error);
-        return res.status(500).json({
-            message: 'Error al remover la publicación',
-        });
+        const errData = HTTPCodes.errorServer('Error interno del servidor al remover la publicación');
+        throw new AppError(errData.statusCode, errData.message, error);
     }
 
 }
