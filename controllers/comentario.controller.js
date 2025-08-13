@@ -35,6 +35,10 @@ export async function crearComentario(req, res){
             publicacion: req.publicacion
         })
     } catch (error) {
+        if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
         console.error('Error al crear comentario:', error)
         const errData = HTTPCodes.errorServer('Error interno del servidor al crear el comentario');
         throw new AppError(errData.statusCode, errData.message, error);
