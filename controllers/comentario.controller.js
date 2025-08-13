@@ -54,6 +54,10 @@ export async function getComentarios(req, res){
         
         res.status(200).json({ comentarios, publicacion: req.publicacion })
     } catch (error) {
+        if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
         console.error('Error al obtener comentarios:', error)
         const errData = HTTPCodes.errorServer('Error interno del servidor al obtener los comentarios');
         throw new AppError(errData.statusCode, errData.message, error);
