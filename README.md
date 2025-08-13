@@ -166,10 +166,13 @@ server.js
    ```
 
 * **Levantar la base de datos**
-  Esto iniciará un contenedor MySQL con la base de datos configurada, taablas creadas y ejemplos precargados.
-   ```bash
+  Desde la carpeta mysql-docker donde se encuentra el archivo docker-compose.yml, ejecuta:
+  
+  ```bash
   docker compose up -d
    ```
+   Esto iniciará un contenedor MySQL con la base de datos configurada, tablas creadas y ejemplos precargados.
+   
 
 * **Instalar dependencias**
    Las dependencias principales incluyen: `express`, `mysql2`, `jsonwebtoken`, `bycrypt`, `dotenv`, `cors` y `sanitizeHtml`.
