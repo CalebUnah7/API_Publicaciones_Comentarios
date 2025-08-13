@@ -9,7 +9,6 @@ import {
     } from "../models/publicacion.model.js";
 import {deleteComentariosByPublicacionId} from "../models/comentario.model.js"
 import { loginUserByHandle } from "../models/usuario.model.js";
-import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
 
 // Obtener todas la publicaciones activas con paginación
@@ -63,15 +62,6 @@ export const getById = async (req, res)=> {
 // Controlador para crear una nueva publicación
 export const createPublicacion = async (req, res) => {
     const data = req.body;
-    //const { success, error, data: safeData } = validatePublicacion(data)
-
-    //if (!success) {
- 
-        //return res.status(400).json({
-            //status:"error",
-            //errores:error.errors.map(err=>err.message)
-        //})
-    //}
 
     const id = uuidv4();
 
@@ -108,16 +98,6 @@ export const editPublicacion = async (req, res) => {
     const { id } = req.params
     const autorId = req.user.id
     const data = req.body;
-    //const { success, error, data: safeData } = validatePublicacion(data)
-
-    //if (!success) {
-        //const errores= error.errors.map(err=>err.message)
-
-       // return res.status(400).json({
-            //status:"error",
-           // errores
-        //})
-    //}
 
     try {
         const publicacion = await getPublicacionById(id)
