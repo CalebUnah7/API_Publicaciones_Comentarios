@@ -6,8 +6,8 @@ import { passwordSchema } from './password.schema.js';
 const usuarioSchema = zod.object({
     "nombre": zod.string({
         message: "El nombre es obligatorio"
-    }).min(3, {
-        message: "El nombre no puede ser tan corto (min 3 caracteres)"
+    }).min(4, {
+        message: "El nombre no puede ser tan corto (min 4 caracteres)"
     }).max(100, {
         message: "El nombre no puede ser tan largo (max 100 caracteres)"}),
     "email": zod.string().email({
@@ -15,7 +15,9 @@ const usuarioSchema = zod.object({
     }),
     "handle": zod.string().min(3, {
         message: "El handle del usuario debe tener al menos 3 caracteres"
-    }).max(30),
+    }).max(20, {
+        message: "El handle del usuario no puede tener más de 20 caracteres"
+    }),
     "password": passwordSchema,
     "role": zod.enum(['user', 'admin'], {
         message: "El rol debe ser 'user' o 'admin'"

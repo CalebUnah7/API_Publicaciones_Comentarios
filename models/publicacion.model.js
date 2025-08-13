@@ -55,7 +55,7 @@ export const getPublicacionRemovidaById = async (id) => {
         WHERE p.id = ? AND p.activo = FALSE;
     `
     const [ rows ] = await pool.query(query, [id]);   
-    return rows
+    return rows[0]
 }
 
 // Buscar una publicación de acuerdo a una Query

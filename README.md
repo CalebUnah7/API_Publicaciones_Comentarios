@@ -1,5 +1,5 @@
 # API_Publicaciones_Comentarios
-Crearemos una API estilo Blog personal desarrollada con Node.js, Express y MySQL
+Desarrollamos una API estilo Blog personal desarrollada con Node.js, Express y MySQL
 
 
 
@@ -67,9 +67,9 @@ server.js
 
 ---
 
-## 📡 Endpoints Requeridos
+## 📡 Endpoints Implementados
 
-### Autenticación
+### Autenticación - Usuarios
 
 | Método | Ruta                   | Descripción           |
 |--------|------------------------|------------------------|
@@ -83,7 +83,8 @@ server.js
 | Método | Ruta                       | Descripción                                     | Protegido | Observaciones                    |
 |--------|----------------------------|--------------------------------------------------|-----------|----------------------------------|
 | GET    | /api/publicaciones         | Listar todas las publicaciones con paginación   | No        | Pública                          |
-| GET    | /api/publicaciones/:id     | Ver una publicación específica                | No        | Pública                          |
+| GET    | /api/publicaciones/search  | Buscar publicaciones de acuerdo a Query         | No        | Título y/o Contenido             |
+| GET    | /api/publicaciones/:id     | Ver una publicación específica                  | No        | Pública                          |
 | POST   | /api/publicaciones         | Crear una nueva publicación                     | Sí        | Solo usuario autenticado         |
 | PUT    | /api/publicaciones/:id     | Editar publicación (solo el autor)              | Sí        | Verificar propiedad              |
 | DELETE | /api/publicaciones/:id     | Eliminar publicación (solo el autor)            | Sí        | Verificar propiedad              |
@@ -102,9 +103,9 @@ server.js
 ## 🔁 Lógica de Negocio
 
 - Solo el autor de una publicación puede editarla o eliminarla.
-- Los comentarios deben ser sanitizados para evitar ataques XSS.
-- Los comentarios no requieren aprobación pero deben validarse (campos no vacíos, tamaño).
-- Las fechas deben guardarse automáticamente al crear o comentar.
+- Los comentarios son sanitizados para evitar ataques XSS.
+- Los comentarios deben validarse (campos no vacíos, tamaño).
+- Las fechas se guardan automáticamente al crear o comentar.
 
 ---
 
@@ -141,7 +142,7 @@ server.js
    ```
 
 * **Instalar dependencias**
-   Las dependencias principales incluyen: `express`, `mysql2`, `jsonwebtoken`, `bycrypt` y `dotenv`.
+   Las dependencias principales incluyen: `express`, `mysql2`, `jsonwebtoken`, `bycrypt`, `dotenv`, `cors` y `sanitizeHtml`.
    ```bash
   npm install
    ```

@@ -1,5 +1,5 @@
 
-export class Respuestas {
+class Respuestas {
 
     static _buildBody(message, payloadKey, payloadValue) {
         const body = { message };
@@ -17,7 +17,6 @@ export class Respuestas {
         return res.status(status).json(body);
     }
 
-
     static errorNF(res, message, errorDetails) {
         return this._error(res, 404, message, errorDetails);
     }
@@ -34,6 +33,10 @@ export class Respuestas {
         return this._error(res, 401, message, errorDetails);
     }
     
+    static errorUnprocessable(res, message, errorDetails) {
+        return this._error(res, 422, message, errorDetails);
+    }
+
     static errorServer(res, message, errorDetails) {
         return this._error(res, 500, message, errorDetails);
     }
@@ -54,3 +57,5 @@ export class Respuestas {
         return this.error400(res, message, details);
     }
 }
+
+export default Respuestas;

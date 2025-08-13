@@ -2,7 +2,7 @@
   "name": "api_publicaciones_comentarios",
   "version": "1.0.0",
   "type": "module",
-  "description": "Crearemos una API tipo bloc",
+  "description": "Crearemos una API tipo Blog",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/CalebUnah7/API_Publicaciones_Comentarios#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",

@@ -2,13 +2,13 @@ import {
         getAllPublicaciones, 
         getPublicacionById, 
         getPublicacionRemovidaById, 
+        getPublicacionByQuery,
         postPublicacion, 
         putPublicacion,  
         deletePublicacion,
         getTotalPublicaciones
     } from "../models/publicacion.model.js";
 import {deleteComentariosByPublicacionId} from "../models/comentario.model.js"
-import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
 
 // Obtener todas la publicaciones activas con paginación
@@ -42,17 +42,16 @@ export const getAll = async (req, res)=>{
 // Obtener una publicación por ID
 export const getById = async (req, res)=> {
     const {id} = req.params
+    const data = req.publicacion
 
     try{
-        const publicacion = await getPublicacionById(id)
-
-        if(!publicacion || publicacion.length === 0){
-            return res.status(404).json({
-                message: 'La publicacion no fue encontrada'
-            })
+        if (!data) {
+            return res.status(422).json({
+                message: 'Error interno: publicación no valida'
+            });
         }
 
-        res.status(200).json(publicacion[0])
+        res.status(200).json(data)
     }catch(error){
         res.status(400).json({
             message: 'Error al obtener la publicacion'
@@ -117,17 +116,12 @@ export const getByQuery = async (req, res) => {
 // Controlador para crear una nueva publicación
 export const createPublicacion = async (req, res) => {
     const data = req.body;
-    const { success, error, data: safeData } = validatePublicacion(data)
-
-    if (!success) {
-        res.status(400).json(error)
-    }
 
     const id = uuidv4();
 
     try{
         const autorId = req.user.id; // ya viene del token validado
-        const response = await postPublicacion(id, safeData.titulo, safeData.contenido, autorId);
+        const response = await postPublicacion(id, data.titulo, data.contenido, autorId);
 
         if (!response) {
             return res.status(400).json({
@@ -155,31 +149,10 @@ export const editPublicacion = async (req, res) => {
     const { id } = req.params
     const autorId = req.user.id
     const data = req.body;
-    const { success, error, data: safeData } = validatePublicacion(data)
-
-    if (!success) {
-        res.status(400).json(error);
-    }
 
     try {
-        // Revisar si la publicación existe
-        const publicacion = await getPublicacionById(id)
-        if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
-            // Consultar si la publicación fue removida
-            const publicacionRemovida = await getPublicacionRemovidaById(id)
-            if (publicacionRemovida) {
-                return res.status(404).json({
-                    message: 'La publicación ha sido removida'
-                });
-            }
-
-            return res.status(404).json({
-                message: `La publicación con id ${id} no fue encontrada`
-            });
-        }
-        
         const updatedData = {
-            ...safeData,
+            ...data,
             autorId: autorId
         }
         //console.log(updatedData)
@@ -194,8 +167,8 @@ export const editPublicacion = async (req, res) => {
         res.json({
             message: 'Publicación editada correctamente',
             publicacion: {
-                titulo: safeData.titulo,
-                contenido: safeData.contenido
+                titulo: data.titulo,
+                contenido: data.contenido
             }
         });
     
@@ -209,27 +182,12 @@ export const editPublicacion = async (req, res) => {
 }
 
 // Controlador para eliminar una publicación
-// Se considera "eliminar" como desactivar la publicación, no eliminarla de la base de datos
+// Se considera "eliminar" como desactivar la publicación (eliminación lógica), no eliminarla de la base de datos 
 export const removePublicacion = async (req, res) => {
     const { id } = req.params
     const autorId = req.user.id
     try{
-        const publicacion = await getPublicacionById(id)
-        if (!publicacion || publicacion.length === 0 || publicacion === undefined) {
-            // Verifica si la publicación ya fué removida en el pasado
-            const publicacionRemovida = await getPublicacionRemovidaById(id)
-            if (publicacionRemovida) {
-                return res.status(404).json({
-                    message: 'La publicación ya ha sido removida'
-                });
-            }
-
-            return res.status(404).json({
-                message: `La publicación con id ${id} no fue encontrada`
-            });
-        }
-
-        const responsePub = await deletePublicacion(id,autorId)
+        const responsePub = await deletePublicacion(id, autorId)
         console.log(responsePub)
         if(!responsePub){
             return res.status(400).json({

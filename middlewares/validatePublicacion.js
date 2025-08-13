@@ -1,7 +1,7 @@
-import { publicacionSchema } from '../schemas/publicacion.schema.js';
+import { validatePublicacion } from '../schemas/publicacion.schema.js';
 
-export const validateSchema = (schema) => (req, res, next) => {
-  const result = schema.safeParse(req.body);
+export const validateSchemaPublicaciones = (req, res, next) => {
+  const result = validatePublicacion(req.body);
   if (!result.success) {
     return res.status(400).json({
       status: "error",
@@ -11,6 +11,4 @@ export const validateSchema = (schema) => (req, res, next) => {
   req.body = result.data;
   next();
 };
-
-export const validatePublicacion = validateSchema(publicacionSchema);
 

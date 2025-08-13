@@ -1,30 +1,33 @@
 ### Lista de publicaciones
-GET http://localhost:3000/api/publicaciones
+GET http://localhost:3000/api/publicaciones?
+
+### Lista de publicaciones (Página 2)
+GET http://localhost:3000/api/publicaciones?page=2
 
 ### Ver publicacion por ID
-GET http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af
+GET http://localhost:3000/api/publicaciones/b208e82a-780e-11f0-9d4f-ba1eeb838575
 
 
 ### Ver comentarios de una publicacion
-GET http://localhost:3000/api/publicaciones/a993b108-7677-11f0-8976-8e5e6c5471af/comentarios
+GET http://localhost:3000/api/publicaciones/b208e82a-780e-11f0-9d4f-ba1eeb838575/comentarios
 
 ### Crear un comentario (requiere token)
-POST http://localhost:3000/api/publicaciones/b0f6544e-553c-40f7-a20e-6c7a9686474b/comentarios
+POST http://localhost:3000/api/publicaciones/b208e82a-780e-11f0-9d4f-ba1eeb838575/comentarios
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDIxODg3LCJleHAiOjE3NTUwNjUwODd9.HSzTfsdIYf8ZA5_wRkIsfrDV2wuyP2ZwPPdA2ovSBGY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDcxMzkyLCJleHAiOjE3NTUwNzQ5OTJ9.jyilBTEOpwNQXVAIl1Wc9Jw8iq7WmNHGRgl4WGAc02w
 
 {
-    "contenido": "ejemplo"
+    "contenido": ""
 }
 
 ### Crear publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDEzODY1LCJleHAiOjE3NTUwNTcwNjV9.1AKvubCGFxxHjTF3Fcz7pcjxENo2OF379Jf4JtDs-eU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDc1ODM1LCJleHAiOjE3NTUwNzk0MzV9.GM5mJ9gr_KUrzMoYHQXzAyoxM-Enmfr-agg1NKmKHM4
 
 {
     "titulo": "Musica y arte",
-    "contenido": "La música y el arte es la forma en la que el alma se expresa"
+    "contenido": "La música y el arte es la forma en la que el alma se expresa."
 }
 
 ### Editar publicación (solo el autor) 
@@ -39,8 +42,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlL
 }
 
 ### Eliminar publicación (solo el autor) 
-DELETE http://localhost:3000/api/publicaciones/96b4b90d-952c-4869-8725-f27f032a04a
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlLTU2ZWQtNDcwYy1hNTNiLTQ3N2Y2OTAwNDU0YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDEzODY1LCJleHAiOjE3NTUwNTcwNjV9.1AKvubCGFxxHjTF3Fcz7pcjxENo2OF379Jf4JtDs-eU
+DELETE http://localhost:3000/api/publicaciones/81fc62b8-0c2c-4117-b696-de69cff3d1ec
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDcxMzkyLCJleHAiOjE3NTUwNzQ5OTJ9.jyilBTEOpwNQXVAIl1Wc9Jw8iq7WmNHGRgl4WGAc02w
 
 
 ### Registrar Usuario
@@ -55,7 +58,19 @@ Content-Type: application/json
     "role": "user"
 }
 
-### Iniciar sesión - Usuario
+### Registrar Otro Usuario
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "nombre": "Jason Daniel VM",
+    "email": "jasonmejia@unah.hn",
+    "handle": "JasDanVM",
+    "password": "palabraPase115",
+    "role": "user"
+}
+
+### Iniciar sesión - Usuario -email
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
@@ -64,6 +79,14 @@ Content-Type: application/json
     "password": "palabraPase115"
 }
 
+### Iniciar sesión - Usuario -handle
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "handle": "CalebAyala",
+    "password": "palabraPase115"
+}
 
 ### Cambio de contraseña
 
@@ -76,3 +99,55 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlL
     "new_password":"palabraPase115*", 
     "confirm_password": "palabr"
 }
+
+
+### Crear Otra publicación (requiere token)
+POST http://localhost:3000/api/publicaciones
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDg1MjI1LCJleHAiOjE3NTUwODg4MjV9.b1VblaxpkkA6VLjOLGh8vbUpd0sOWaPLewfZj-Pf46g
+
+{
+    "titulo": "Música y la Psicología",
+    "contenido": "Como la música puede influir en nuestras emociones y comportamientos..."
+}
+
+### Búsqueda de publicaciones
+
+### 1. Búsqueda solo por título
+GET http://localhost:3000/api/publicaciones/search?titulo=musica
+
+### 2. Búsqueda solo por contenido  
+GET http://localhost:3000/api/publicaciones/search?contenido=alma
+
+### 3. Búsqueda por título y contenido
+GET http://localhost:3000/api/publicaciones/search?titulo=musica&contenido=expresa
+
+### 4. Búsqueda con acentos
+GET http://localhost:3000/api/publicaciones/search?titulo=música
+
+### 5. Búsqueda con mayúsculas
+GET http://localhost:3000/api/publicaciones/search?titulo=MUSICA
+
+### 6. Búsqueda con espacios extra
+GET http://localhost:3000/api/publicaciones/search?titulo=%20musica%20
+
+### 7. Búsqueda parcial
+GET http://localhost:3000/api/publicaciones/search?titulo=musi
+
+### 8. Búsqueda que no existe
+GET http://localhost:3000/api/publicaciones/search?titulo=palabrainexistente123
+
+### 9. Error: Sin parámetros de búsqueda (400)
+GET http://localhost:3000/api/publicaciones/search?
+
+### 10. Error: Parámetros vacíos (400)
+GET http://localhost:3000/api/publicaciones/search?titulo=&contenido=
+
+### 11. Error: Solo espacios en parámetros (400)
+GET http://localhost:3000/api/publicaciones/search?titulo=%20%20&contenido=%20%20
+
+### 12. Búsqueda con caracteres especiales
+GET http://localhost:3000/api/publicaciones/search?titulo=música%20y%20arte
+
+### 13. Búsqueda solo por contenido con texto largo
+GET http://localhost:3000/api/publicaciones/search?contenido=forma%20en%20la%20que

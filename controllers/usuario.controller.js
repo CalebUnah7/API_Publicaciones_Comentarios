@@ -15,7 +15,7 @@ export async function registerUser(req, res){
   if(!success){
     return res.status(400).json({
       message: 'Datos de usuario inválidos',
-      error
+      errores: error.issues.map(e => e.message)
     })
   }
   //const { email, nombre, handle, password, role } = req.body
@@ -51,20 +51,39 @@ export async function registerUser(req, res){
   }
 }
 
-// Controlador para iniciar sesión con el email del usuario
-export async function login(req,res){
-  const { email, password } = req.body
-  const data = await loginUser(email)
-  console.log(data)
+// Controlador para iniciar sesión con el email o el handle(@) del usuario
+export async function login(req, res) {
+  const { email, handle, password } = req.body;
+  let data;
+  let expiresIn;
+
+  if (email && handle) {
+    return res.status(400).json({
+      success: false,
+      message: 'Debe proporcionar solo un email o un handle para iniciar sesión'
+    });
+  } else if (!email && !handle) {
+    return res.status(400).json({
+      success: false,
+      message: 'Debe proporcionar un email o un handle para iniciar sesión'
+    });
+  }
+
+  if (email) {
+    data = await loginUser(email);
+    expiresIn = '1h';
+  } else if (handle) {
+    data = await loginUserByHandle(handle);
+    expiresIn = '1h';
+  }
 
   //validamos que las contraseñas coincidan
-  if(!await bcrypt.compare(password, data.password_hash)){
+  if (!data || !await bcrypt.compare(password, data.password_hash)) {
     return res.status(401).json({
       success: false,
       message: 'Usuario o contraseña incorrectos'
-    })
-    }
-
+    });
+  }
 
   // //validar si el usuario cambió la contraseña temporal
   // if(data.must_change_password){
@@ -83,72 +102,22 @@ export async function login(req,res){
   //     }
   //   })
   // }
-  
-  const token = jwt.sign({id: data.id,role: data.role},process.env.JWT_SECRET,
-    { algorithm: 'HS256',
-      expiresIn: '1h'
-    }
-  )
 
-  delete data.password_hash
+  const token = jwt.sign(
+    { id: data.id, role: data.role },
+    process.env.JWT_SECRET,
+    { algorithm: 'HS256', expiresIn }
+  );
 
-  res.json({
-    success: true,
-    message: 'Usuario autenticado correctamente',
-    token: token
-  })
-
-}
-
-
-// Controlador para iniciar sesión con el handle(@) del usuario
-export async function loginByHandle(req,res){
-  const { handle, password } = req.body
-  const data = await loginUserByHandle(handle)
-  console.log(data)
-
-  //validamos que las contraseñas coincidan
-  if(!await bcrypt.compare(password, data.password_hash)){
-    return res.status(401).json({
-      success: false,
-      message: 'Usuario o contraseña incorrectos'
-    })
-    }
-
-      // //validar si el usuario cambió la contraseña temporal
-  // if(data.must_change_password){
-  //   const tokenTemporal = jwt.sign({
-  //     id: data.id,
-  //     password: data.password_hash
-  //   }, process.env.JWT_SECRET,
-  //   {  expiresIn: '1h'  
-  //   })
-
-  //   return res.status(401).json({
-  //     success: true,
-  //     message: 'Debe cambiar su contraseña',
-  //     data: {
-  //       token: tokenTemporal,
-  //     }
-  //   })
-  // }
-
-  const token = jwt.sign({id: data.id,role: data.role},process.env.JWT_SECRET,
-    { algorithm: 'HS256',
-      expiresIn: '12h'
-    }
-  )
-
-  delete data.password_hash
+  delete data.password_hash;
 
   res.json({
     success: true,
     message: 'Usuario autenticado correctamente',
-    data: data,
-    token: token
-  })
-
+    token
+  });
 }
+
 
 // Controlador para cambiar la contraseña del usuario
 export async function setPassword(req,res){

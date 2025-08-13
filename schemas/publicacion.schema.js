@@ -5,8 +5,12 @@ import zod from 'zod';
 export const publicacionSchema = zod.object({
     "titulo": zod.string({
         message: "El titulo debería ser añadido"
+    }).min(5, {
+        message: "El título debe tener al menos 5 caracteres"
     }).max(250),
-    "contenido": zod.string().min(10, {
+    "contenido": zod.string({
+        message: "El contenido tiene que ser añadido"
+    }).min(10, {
         message: "El contenido debe tener al menos 10 caracteres"
     })
 });

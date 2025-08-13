@@ -2,29 +2,55 @@ import {Router} from 'express'
 import { 
     getAll, 
     getById, 
+    getByQuery, 
     createPublicacion, 
     editPublicacion, 
-    removePublicacion 
+    removePublicacion, 
     
 }   from '../controllers/publicacion.controller.js'
-import { verifyToken } from '../middlewares/verifyToken.js';
-import { validatePublicacion } from '../middlewares/validatePublicacion.js';
+import { verifyToken } from '../middlewares/verifyToken.js'; // Verificar el token JWT
+import { validateSchemaPublicaciones } from '../middlewares/validatePublicacion.js'; // Validar el esquema de la publicación
+import { checkPublicacionExists } from '../middlewares/checkPublicacion.js' // Verificar que la publicación existe
+import { validateUUID } from '../middlewares/validateUUID.js' // Validar que el ID de la publicación es un UUID válido
 
 const routerPublicacion = Router()
 
 // Listar todas las publicaciones
 routerPublicacion.get('/', getAll)
 
+
+// Buscar una publicación de acuerdo a una Query
+routerPublicacion.get('/search', getByQuery)
+
 // Obtener una publicación por ID 
-routerPublicacion.get('/:id', getById)
+routerPublicacion.get('/:id', 
+    validateUUID, 
+    checkPublicacionExists(false), 
+    getById
+)
 
 // Crear nueva publicación (requiere token)
-routerPublicacion.post('/', verifyToken, validatePublicacion, createPublicacion)
+routerPublicacion.post('/', 
+    verifyToken, 
+    validateSchemaPublicaciones, 
+    createPublicacion
+)
 
 // Editar publicación (requiere token y validación del esquema)
-routerPublicacion.put('/:id', verifyToken, validatePublicacion, editPublicacion)
+routerPublicacion.put('/:id', 
+    validateUUID, 
+    checkPublicacionExists(false), 
+    verifyToken, 
+    validateSchemaPublicaciones, 
+    editPublicacion
+)
 
 // Remover publicación (requiere token)
-routerPublicacion.delete('/:id', verifyToken, removePublicacion)
+routerPublicacion.delete('/:id', 
+    validateUUID, 
+    checkPublicacionExists(true), // Se envía true por ser el caso de intentar remover (mensaje personalizado de ya haber sido removida antes)
+    verifyToken, 
+    removePublicacion
+)
 
 export default routerPublicacion

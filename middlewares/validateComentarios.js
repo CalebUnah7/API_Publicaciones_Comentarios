@@ -1,7 +1,7 @@
-import { comentarioSchema } from '../schemas/comentario.schema.js';
+import { validateComentario } from '../schemas/comentario.schema.js';
 
-export const validateSchema = (schema) => (req, res, next) => {
-  const result = schema.safeParse(req.body);
+export const validateSchemaComentarios = (req, res, next) => {
+  const result = validateComentario(req.body);
   if (!result.success) {
     const mensajes = result.error?.issues?.map(e => e.message).join('. ') || "Error desconocido";
     return res.status(400).json({
@@ -12,6 +12,4 @@ export const validateSchema = (schema) => (req, res, next) => {
   req.body = result.data;
   next();
 };
-
-export const validateComentarios = validateSchema(comentarioSchema);
 
