@@ -35,11 +35,11 @@ CREATE TABLE comentariosPublicaciones (
 
 /* Inserciones */
 
-INSERT INTO users (id, email, handle, nombre, password_hash)
+INSERT INTO users (id, email, handle, nombre, password_hash,must_change_password)
 VALUES 
-  (UUID_TO_BIN(UUID()), 'abrahan@example.com', 'Abrahan', 'Abrahan Rodríguez', 'hash$unoaaa'),
-  (UUID_TO_BIN(UUID()), 'beauty@example.com', 'BeautyBlogger', 'Camila Estilo', 'hash$dosaaa'),
-  (UUID_TO_BIN(UUID()), 'viajero@example.com', 'Un_ViajeroxElMundo', 'Luis Aventuras', 'hash$tresaaa');
+  (UUID_TO_BIN(UUID()), 'abrahan@example.com', 'Abrahan', 'Abrahan Rodríguez', 'hash$unoaaa',0),
+  (UUID_TO_BIN(UUID()), 'beauty@example.com', 'BeautyBlogger', 'Camila Estilo', 'hash$dosaaa',0),
+  (UUID_TO_BIN(UUID()), 'viajero@example.com', 'Un_ViajeroxElMundo', 'Luis Aventuras', 'hash$tresaaa',0);
 
 INSERT INTO publicaciones (id, titulo, contenido, autorID)
 VALUES (
