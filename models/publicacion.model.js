@@ -58,6 +58,42 @@ export const getPublicacionRemovidaById = async (id) => {
     return rows
 }
 
+// Buscar una publicación de acuerdo a una Query
+export const getPublicacionByQuery = async (titulo, contenido) => {
+    let query = `
+        SELECT 
+            p.id, 
+            p.titulo, 
+            p.contenido,
+            BIN_TO_UUID(p.autorID) AS autorID,
+            u.nombre AS autor_nombre,
+            u.handle AS autor_handle,
+            p.fecha_creacion
+        FROM publicaciones p
+        LEFT JOIN users u ON p.autorID = u.id
+        WHERE p.activo = TRUE
+    `;
+
+    const params = [];
+
+    // Manejar título si está presente
+    if (titulo) {
+        query += ' AND LOWER(p.titulo) COLLATE utf8mb4_general_ci LIKE ?';
+        params.push(`%${titulo}%`);
+    }
+    
+    // Manejar contenido si está presente
+    if (contenido) {
+        query += ' AND LOWER(p.contenido) COLLATE utf8mb4_general_ci LIKE ?';
+        params.push(`%${contenido}%`);
+    }
+
+    query += ' ORDER BY p.fecha_creacion DESC;';
+
+    const [rows] = await pool.query(query, params);
+    return rows;
+}
+
 // Crear una nueva publicación
 export const postPublicacion = async (id, titulo, contenido, autorId) =>{
     const query = `
@@ -128,13 +164,4 @@ export const getTotalPublicaciones = async ()=>{
     ;
     const [rows] = await pool.query(query)
     return rows [0].total
-}
-
-export const deleteComentariosByPublicacionId = async(id)=>{
-    const query = `UPDATE comentariosPublicaciones SET activo = 0 
-                   WHERE publicacion_id = ?`
-
-    const [result] = await pool.query(query,[id])
-
-    return result.affectedRows > 0
 }

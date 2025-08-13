@@ -10,7 +10,7 @@ export async function crearComentario(req, res){
         const {id:publicacion_id} = req.params
         const user_id = req.user.id
         const {contenido} = req.body
-     
+    
 
         const publicacion = await getPublicacionById(publicacion_id)
 
