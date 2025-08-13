@@ -20,3 +20,5 @@ export const passwordSchema =
     .refine((password) => /[0-9]/.test(password), { 
         message: "La contraseña debe contener al menos un número", 
     });
+
+   

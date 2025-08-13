@@ -67,12 +67,12 @@ Content-Type: application/json
 
 ### Cambio de contraseña
 
-PATCH http://localhost:3000/auth/set-password
+PATCH http://localhost:3000/api/auth/set-password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFiMDg0YWRiLTJkMjEtNGM1ZC04YTNlLTRjNWFkOTEyNDY2YSIsInBhc3N3b3JkIjoiJDJiJDEwJHA3YlFMZkd4a1QyWDdtN1FZRDFlWWU1S2VSRG5wSEhXb1c0czE2RDlFN0hkWDBDZVNjVWtTIiwiaWF0IjoxNzUyNzk0NjQzLCJleHAiOjE3NTI3OTgyNDN9.dC9JbCFBbyjW3hO_b5kc7GiHZH8MHWzo0vgNeWzKlm8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlLTUyYzMtNDQwMy1iZDVlLWI1ZjhiYzI0NTI2MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDI2ODU3LCJleHAiOjE3NTUwMzA0NTd9.WSlEARrpct1arVKIjQt_kf1zgifKWV1NKM64Jd3tE9Y
 
 { 
     "old_password":"palabraPase115",
-    "new_password":"palabraPase#02311", 
-    "confirm_password": "palabraPase#02311"
+    "new_password":"palabraPase115*", 
+    "confirm_password": "palabr"
 }

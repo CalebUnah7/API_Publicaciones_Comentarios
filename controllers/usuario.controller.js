@@ -4,7 +4,7 @@ import {Resend} from 'resend'
 import {v4 as uuidv4} from 'uuid'
 import {register, loginUser, loginUserByHandle, updatePassword} from '../models/usuario.model.js'
 import {validateUsuario} from '../schemas/usuario.schema.js'
-import {passwordSchema} from '../schemas/password.schema.js'
+import { passwordSchema} from '../schemas/password.schema.js'
 
 // Controlador para registrar un nuevo usuario
 export async function registerUser(req, res){

@@ -7,7 +7,6 @@ import {
         deletePublicacion,
         getTotalPublicaciones
     } from "../models/publicacion.model.js";
-import {deleteComentariosByPublicacionId} from "../models/comentario.model.js"
 import { loginUserByHandle } from "../models/usuario.model.js";
 import { validatePublicacion } from "../schemas/publicacion.schema.js";
 import { v4 as uuidv4 } from 'uuid';
