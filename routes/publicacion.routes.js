@@ -10,39 +10,21 @@ import {
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { validatePublicacion } from '../middlewares/validatePublicacion.js';
 
-
 const routerPublicacion = Router()
 
 // Listar todas las publicaciones
-routerPublicacion.get('/', getAll);
+routerPublicacion.get('/', getAll)
 
-// Obtener una publicación por ID (solo si existe)
-routerPublicacion.get(
-    '/:id',
-    checkPublicacionExists(), // 404 o 410 antes de getById
-    getById
-);
+// Obtener una publicación por ID 
+routerPublicacion.get('/:id', getById)
 
 // Crear nueva publicación (requiere token)
-routerPublicacion.post(
-    '/',
-    verifyToken,
-    createPublicacion
-);
+routerPublicacion.post('/', verifyToken, validatePublicacion, createPublicacion)
 
-// Editar publicación (requiere token y que la publicación exista)
-routerPublicacion.put(
-    '/:id',
-    verifyToken,
-    checkPublicacionExists(), // solo 404 si no existe
-    editPublicacion
-);
+// Editar publicación (requiere token y validación del esquema)
+routerPublicacion.put('/:id', verifyToken, validatePublicacion, editPublicacion)
 
-// Remover publicación (requiere token y existe o marcó como removida)
-routerPublicacion.delete(
-    '/:id',
-    verifyToken,
-    checkPublicacionExists(true), // 410 si ya removida, 404 si no existe
-    removePublicacion
-);
+// Remover publicación (requiere token)
+routerPublicacion.delete('/:id', verifyToken, removePublicacion)
+
 export default routerPublicacion

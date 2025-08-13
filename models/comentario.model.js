@@ -58,14 +58,14 @@ export async function deleteComentario(id){
 }
 
 //Elimar todos los comentarios de una publicación (cambiar su estado a inactivo)
-export async function deleteComentariosByPublicacionId(publicacion_id){
+export async function deleteComentariosByPublicacionId(pubId){
     const query = `UPDATE comentariosPublicaciones
                     SET activo = FALSE
                     WHERE publicacion_id = ?`
 
-    const [rows] = await pool.query(query,[publicacion_id])
+    const [result] = await pool.query(query,[pubId])
 
-    return rows
+    return result.affectedRows > 0
 }
 
 
