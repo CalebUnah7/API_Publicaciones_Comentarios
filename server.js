@@ -4,8 +4,9 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/usuario.routes.js';
 import publicacionRoutes from './routes/publicacion.routes.js'
 import comentarioRoutes from './routes/comentario.routes.js'
-import Respuestas from './utils/respuestas.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { AppError } from './utils/AppError.js';
+import HTTPCodes from './shared/codes.js';
 
 dotenv.config();
 
@@ -27,9 +28,10 @@ app.use('/api/publicaciones', publicacionRoutes)
 // Rutas para comentarios de publicaciones
 app.use('/api/publicaciones', comentarioRoutes)
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   const detalles = { ruta: req.url, metodo: req.method }
-  return Respuestas.errorNF(res, `Dirección  no encontrada`, detalles)
+  const errData = HTTPCodes.errorNotFound(`Ruta no encontrada`);
+  return next(new AppError(errData.statusCode, errData.message, detalles));
 })
 
 // Middleware de manejo de errores (debe ir al final)
