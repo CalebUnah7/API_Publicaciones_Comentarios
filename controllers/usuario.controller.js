@@ -26,7 +26,7 @@ export async function registerUser(req, res){
 
   const { email, nombre, handle, password, role } = safeData
   const id = uuidv4()
-  console.log(id)
+  //console.log(id)
    // const password = Math.random().toString().slice(2, 6)
   const password_hash = await bcrypt.hash(password,10)
    // console.log(process.env.RESEND_API_KEY)
@@ -47,7 +47,11 @@ export async function registerUser(req, res){
     })
 
   } catch (error) {
-    console.error('Error al registrar el usuario:', error);
+    if (error instanceof AppError) {
+            // Se vuelve a lanzar el error para que el manejador de errores lo procese
+            throw error;
+        }
+    //console.error('Error al registrar el usuario:', error);
     const errData = HTTPCodes.errorServer('Error interno del servidor al registrar el usuario');
     throw new AppError(
       errData.statusCode, 
@@ -160,6 +164,10 @@ export async function setPassword(req,res){
     })
 
   } catch (error) {
+    if (error instanceof AppError) {
+      // Se vuelve a lanzar el error para que el manejador de errores lo procese
+      throw error;
+    }
     const errData = HTTPCodes.errorUnauthorized('Debe iniciar sesión para cambiar la contraseña');
     throw new AppError(errData.statusCode, errData.message, error);
   }

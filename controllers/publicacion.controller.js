@@ -165,7 +165,7 @@ export const editPublicacion = async (req, res) => {
         }
         const response = await putPublicacion(id, updatedData)
         if(!response){
-            const errData = HTTPCodes.errorBadRequest('No se pudo actualizar la publicación, verifique que el autor sea el mismo');
+            const errData = HTTPCodes.errorUnauthorized('No se pudo actualizar la publicación, verifique que el autor sea el mismo');
             throw new AppError(errData.statusCode, errData.message);
         }
         
@@ -197,9 +197,9 @@ export const removePublicacion = async (req, res) => {
     const autorId = req.user.id
     try{
         const responsePub = await deletePublicacion(id, autorId)
-        console.log(responsePub)
+        
         if(!responsePub){
-            const errData = HTTPCodes.errorBadRequest('No se pudo remover la publicación, verifique que el autor sea el mismo');
+            const errData = HTTPCodes.errorUnauthorized('No se pudo remover la publicación, verifique que el autor sea el mismo');
             throw new AppError(errData.statusCode, errData.message);
         }
 

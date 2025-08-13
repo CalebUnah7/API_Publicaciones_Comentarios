@@ -19,10 +19,10 @@ export async function crearComentario(req, res){
 
     try {
         const id = uuidv4() // generar un nuevo UUID para el comentario
-        console.log('ID del comentario:', id, publicacionId, user_id, texto)
+        //console.log('ID del comentario:', id, publicacionId, user_id, texto)
         
         const result = await createComentario([id, publicacionId, user_id, texto])
-        console.log(result)
+        //console.log(result)
         
         if (!result) {
             const errData = HTTPCodes.errorBadRequest('Error al crear el comentario, verifique la información proporcionada');
@@ -39,7 +39,7 @@ export async function crearComentario(req, res){
             // Se vuelve a lanzar el error para que el manejador de errores lo procese
             throw error;
         }
-        console.error('Error al crear comentario:', error)
+        //console.error('Error al crear comentario:', error)
         const errData = HTTPCodes.errorServer('Error interno del servidor al crear el comentario');
         throw new AppError(errData.statusCode, errData.message, error);
     }
@@ -62,7 +62,7 @@ export async function getComentarios(req, res){
             // Se vuelve a lanzar el error para que el manejador de errores lo procese
             throw error;
         }
-        console.error('Error al obtener comentarios:', error)
+        //console.error('Error al obtener comentarios:', error)
         const errData = HTTPCodes.errorServer('Error interno del servidor al obtener los comentarios');
         throw new AppError(errData.statusCode, errData.message, error);
     } 
