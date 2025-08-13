@@ -1,4 +1,6 @@
 import { getPublicacionById, getPublicacionRemovidaById } from '../models/publicacion.model.js';
+import HTTPCodes from '../shared/codes.js';
+import { AppError } from '../utils/AppError.js';
 
 // Revisa si una publicación existe y está activa, o si ha sido removida
 export const checkPublicacionExists = (rem = false) => {
@@ -12,18 +14,20 @@ export const checkPublicacionExists = (rem = false) => {
                 // Consultar si la publicación fue removida
                 const publicacionRemovida = await getPublicacionRemovidaById(id);
                 
+                let errData;
                 if (publicacionRemovida) {
-                    const status = rem ? 410 : 404;
-                    const message = rem 
-                        ? 'La publicación ya había sido removida en el pasado'
-                        : 'La publicación ha sido removida';
-                    
-                    return res.status(status).json({ message });
-                }
-
-                return res.status(404).json({
-                    message: `La publicación con id ${id} no fue encontrada`
-                });
+                    errData = rem
+                        ? HTTPCodes.errorNotFound('La publicación ya había sido removida en el pasado')
+                        : HTTPCodes.errorGone('La publicación ha sido removida');
+                    } else {
+                    errData = HTTPCodes.errorNotFound(`La publicación con id ${id} no fue encontrada`);
+                    }
+                    // Lanzar un error personalizado
+                    return next(new AppError(errData.statusCode, errData.message));
+                
+                // return res.status(404).json({
+                //     message: `La publicación con id ${id} no fue encontrada`
+                // });
             }
 
             // Si la publicación existe, la añadimos al request para su uso posterior

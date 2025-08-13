@@ -14,19 +14,19 @@ GET http://localhost:3000/api/publicaciones/b208e82a-780e-11f0-9d4f-ba1eeb838575
 ### Crear un comentario (requiere token)
 POST http://localhost:3000/api/publicaciones/b208e82a-780e-11f0-9d4f-ba1eeb838575/comentarios
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDcxMzkyLCJleHAiOjE3NTUwNzQ5OTJ9.jyilBTEOpwNQXVAIl1Wc9Jw8iq7WmNHGRgl4WGAc02w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxNTgyOGVmLWZjZDEtNDdjNi1iNzk2LTYzNjhmMzMyYWE0YiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MTA2MzEwLCJleHAiOjE3NTUxMDk5MTB9.UfHFaurlD_XDz3xU7EbKlTJMMaOrAzvARPSJklqRDCM
 
 {
-    "contenido": ""
+    "contenido": "Intereseante publicación, me gustaría saber más sobre este tema."
 }
 
 ### Crear publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDc1ODM1LCJleHAiOjE3NTUwNzk0MzV9.GM5mJ9gr_KUrzMoYHQXzAyoxM-Enmfr-agg1NKmKHM4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MTAyMTc0LCJleHAiOjE3NTUxMDU3NzR9.mJsAB6CD4gKT2BpgHGoXINHbMDWThbOlUzeHoxdtRNA
 
 {
-    "titulo": "Musica y arte",
+    "titulo": "",
     "contenido": "La música y el arte es la forma en la que el alma se expresa."
 }
 
@@ -42,8 +42,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQzMWYzNjBlL
 }
 
 ### Eliminar publicación (solo el autor) 
-DELETE http://localhost:3000/api/publicaciones/81fc62b8-0c2c-4117-b696-de69cff3d1ec
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDcxMzkyLCJleHAiOjE3NTUwNzQ5OTJ9.jyilBTEOpwNQXVAIl1Wc9Jw8iq7WmNHGRgl4WGAc02w
+DELETE http://localhost:3000/api/publicaciones/b208e82a-780e-11f0-9d4f-ba1eeb838575
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQxNTgyOGVmLWZjZDEtNDdjNi1iNzk2LTYzNjhmMzMyYWE0YiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MTA2MzEwLCJleHAiOjE3NTUxMDk5MTB9.UfHFaurlD_XDz3xU7EbKlTJMMaOrAzvARPSJklqRDCM
 
 
 ### Registrar Usuario
@@ -84,7 +84,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "handle": "CalebAyala",
+    "handle": "JasDanVM",
     "password": "palabraPase115"
 }
 
@@ -104,7 +104,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMzI2YzdlL
 ### Crear Otra publicación (requiere token)
 POST http://localhost:3000/api/publicaciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MDg1MjI1LCJleHAiOjE3NTUwODg4MjV9.b1VblaxpkkA6VLjOLGh8vbUpd0sOWaPLewfZj-Pf46g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjMGRhMTQxLTY3Y2YtNGRkMi1iMDNmLTI0NDMxNGZmZmI3YSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MTA5MjA3LCJleHAiOjE3NTUxMTI4MDd9.72-yqJH5K3vogoJV9zW2_TUq-_9AgRudC5GbgzZlqt0
 
 {
     "titulo": "Música y la Psicología",

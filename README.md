@@ -2,17 +2,14 @@
 Desarrollamos una API estilo Blog personal desarrollada con Node.js, Express y MySQL
 
 
-
-Requisitos del Proyecto:
-
 # Proyecto: API de Publicaciones y Comentarios (Blog Personal)
 
-## 🧾 Objetivo
+## 🧾 Objetivo del Proyecto
 Desarrollar una API RESTful utilizando Node.js y Express que permita a los usuarios crear publicaciones tipo blog y comentar en ellas. La API debe incluir autenticación, control de permisos por autor, validaciones, protección contra XSS y estar estructurada bajo el patrón MVC.
 
 ---
 
-## ✅ Requisitos Técnicos
+## ✅ Características Técnicos
 
 - Node.js y Express.
 - Base de datos MySQL.
@@ -29,19 +26,18 @@ Desarrollar una API RESTful utilizando Node.js y Express que permita a los usuar
 
 ---
 
-## 🧱 Estructura de Carpetas Sugerida
-
+## 🧱 Estructura de Carpetas
 ```
 /api
-  /controllers
-  /models
-  /routes
-  /middlewares
-  /config
-  /utils
-  /schemas
-  /shared
-  /mysql-docker
+   /config
+   /controllers
+   /middlewares
+   /models
+   /mysql-docker
+   /routes
+   /schemas
+   /shared
+   /utils
 server.js
 .env
 ```
@@ -109,22 +105,56 @@ server.js
 
 ---
 
-## 📋 Buenas Prácticas Esperadas
+## Sistema de Middlewares
+- Se ha implementado un sistema de múltiples Middlewares con la intención de comprabar diferentes datos y reducir la repetición de código.
 
-- Uso correcto de códigos HTTP.
-- Validación de entradas en controladores o middleware.
-- Middleware centralizado para manejo de errores.
-- Estructura clara por módulos (MVC).
-- Código organizado, comentado y mantenible.
+### **1. Middleware de Autenticación**  
+**verifyToken**  
+- Extrae el token del header `Authorization` en formato `Bearer <token>`  
+- Verifica la firma usando la clave secreta de entorno  
+- Decodifica y asigna `{ id, rol }` a `req.user`  
+- Responde con **401 Unauthorized** si el token es inválido, expirado o ausente  
 
----
+### **2. Middlewares de Validación de Esquemas**  
+**validateSchemaPublicaciones**  
+- Utiliza Zod para validar:  
+  - `title`: 5–250 caracteres  
+  - `content`: mínimo 10 caracteres  
+- Responde con **400 Bad Request** y mensajes específicos de validación  
 
-## 🧪 Recomendaciones Adicionales
+**validateSchemaComentarios**  
+- Utiliza Zod para validar:  
+  - `content`: mínimo 1 carácter  
+- Responde con **400 Bad Request** si el contenido está vacío  
 
-- Sanitizar los campos de entrada.
-- Documentar los endpoints.
-- Implementar orden descendente por fecha de publicación.
-- Permitir búsquedas por palabra clave en título/contenido.
+### **3. Middleware de Validación de Identificadores**  
+**validateUUID**  
+- Emplea la librería `uuid` para comprobar que `id` sea un UUID válido  
+- Responde con **400 Bad Request** si el formato no es un UUID  
+
+### **4. Middleware de Verificación de Recursos**  
+**checkPublicacionExists**  
+- Consulta la base de datos por el `id` de la publicación  
+- Si no existe, responde con **404 Not Found**  
+- Si existe pero fue eliminada lógicamente, responde con **410 Gone**  
+- Almacena la entidad encontrada en `req.publicacion` para uso en el controlador  
+
+### **5. Middleware de Manejo de Errores**  
+- Centraliza respuestas de error mediante la clase **Respuestas**  
+- Cada error lanzado con `AppError` o generado por un middleware  
+- Middleware global captura y envía un JSON con las claves:  
+  - `status` (código HTTP)  
+  - `estado` (etiqueta lógica: `success` / `fail` / `error`)  
+  - `message`  
+  - `detalles` (información adicional)  
+
+### **6. Flujo de Ejecución de Middlewares**  
+1. **validateUUID**  
+2. **checkPublicacionExists**  
+3. **verifyToken** (solo en rutas protegidas)  
+4. Validaciones de esquema: **validateSchemaPublicaciones** / **validateSchemaComentarios**  
+5. Controlador  
+6. Middleware global de manejo de errores  
 
 ---
 
@@ -219,3 +249,5 @@ A continuación, se un ejemplo de insercion de datos que puede utilizar para pob
   "email": "juan@example.com",
   "password_hash": "...bcrypt hash..."
 }
+
+   Se puede referir al archivo appi.http para algunas pruebas comunes
